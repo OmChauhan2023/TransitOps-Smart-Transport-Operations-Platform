@@ -275,3 +275,122 @@ export const dispatchTrip = async (req: Request, res: Response): Promise<void> =
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+// POST /api/trips/:id/complete — complete a Dispatched trip + sync status
+export const completeTrip = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { actual_distance, fuel_consumed, note } = req.body;
+
+    const trip = await prisma.trip.findUnique({
+      where: { id: req.params.id },
+      include: { vehicle: true, driver: true },
+    });
+
+    if (!trip) {
+      res.status(404).json({ message: 'Trip not found' });
+      return;
+    }
+
+    if (trip.status !== 'Dispatched') {
+      res.status(400).json({ message: `Only dispatched trips can be completed (Current status: ${trip.status})` });
+      return;
+    }
+
+    const distanceNum = actual_distance !== undefined ? parseFloat(actual_distance) : trip.planned_distance;
+    const fuelNum = fuel_consumed !== undefined && fuel_consumed !== '' ? parseFloat(fuel_consumed) : null;
+
+    const completedTrip = await prisma.$transaction(async (tx) => {
+      const updated = await tx.trip.update({
+        where: { id: trip.id },
+        data: {
+          status: 'Completed',
+          completed_at: new Date(),
+          actual_distance: distanceNum,
+          fuel_consumed: fuelNum,
+          note: note !== undefined ? note : trip.note,
+        },
+        include: { vehicle: true, driver: true },
+      });
+
+      // Sync Vehicle: return status to Available and add distance to odometer
+      await tx.vehicle.update({
+        where: { id: trip.vehicle_id },
+        data: {
+          status: 'Available',
+          odometer: { increment: distanceNum },
+        },
+      });
+
+      // Sync Driver: return status to Available
+      await tx.driver.update({
+        where: { id: trip.driver_id },
+        data: {
+          status: 'Available',
+        },
+      });
+
+      return updated;
+    });
+
+    res.json({ message: 'Trip completed successfully', trip: completedTrip });
+  } catch (err) {
+    console.error('completeTrip error:', err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+// POST /api/trips/:id/cancel — cancel a Draft or Dispatched trip + sync status
+export const cancelTrip = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { reason, note } = req.body;
+
+    const trip = await prisma.trip.findUnique({
+      where: { id: req.params.id },
+      include: { vehicle: true, driver: true },
+    });
+
+    if (!trip) {
+      res.status(404).json({ message: 'Trip not found' });
+      return;
+    }
+
+    if (trip.status === 'Completed' || trip.status === 'Cancelled') {
+      res.status(400).json({ message: `Cannot cancel trip that is already ${trip.status}` });
+      return;
+    }
+
+    const wasDispatched = trip.status === 'Dispatched';
+
+    const cancelledTrip = await prisma.$transaction(async (tx) => {
+      const updated = await tx.trip.update({
+        where: { id: trip.id },
+        data: {
+          status: 'Cancelled',
+          cancelled_at: new Date(),
+          note: note || reason || trip.note,
+        },
+        include: { vehicle: true, driver: true },
+      });
+
+      // If it was dispatched, revert vehicle & driver back to Available
+      if (wasDispatched) {
+        await tx.vehicle.update({
+          where: { id: trip.vehicle_id },
+          data: { status: 'Available' },
+        });
+
+        await tx.driver.update({
+          where: { id: trip.driver_id },
+          data: { status: 'Available' },
+        });
+      }
+
+      return updated;
+    });
+
+    res.json({ message: 'Trip cancelled successfully', trip: cancelledTrip });
+  } catch (err) {
+    console.error('cancelTrip error:', err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};

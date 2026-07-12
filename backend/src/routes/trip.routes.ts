@@ -8,6 +8,8 @@ import {
   getTripById,
   createTrip,
   dispatchTrip,
+  completeTrip,
+  cancelTrip,
 } from '../controllers/trip.controller';
 
 const router = Router();
@@ -24,5 +26,8 @@ router.get('/:id', rbacGuard('trips', 'view'), getTripById);
 // POST routes (requires 'full' access on 'trips' — Dispatcher)
 router.post('/', rbacGuard('trips', 'full'), createTrip);
 router.post('/:id/dispatch', rbacGuard('trips', 'full'), dispatchTrip);
+router.post('/:id/complete', rbacGuard('trips', 'full'), completeTrip);
+router.post('/:id/cancel', rbacGuard('trips', 'full'), cancelTrip);
 
 export default router;
+

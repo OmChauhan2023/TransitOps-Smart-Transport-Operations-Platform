@@ -135,6 +135,28 @@ export const TripsPage: React.FC = () => {
     }
   };
 
+  const handleCompleteTrip = async (trip: Trip) => {
+    const distStr = prompt('Enter actual distance (km):', trip.planned_distance.toString());
+    if (distStr === null) return;
+    const actual_distance = parseFloat(distStr) || trip.planned_distance;
+    try {
+      await api.post(`/trips/${trip.id}/complete`, { actual_distance });
+      fetchTrips();
+    } catch (err: any) {
+      alert(err.response?.data?.message || 'Failed to complete trip');
+    }
+  };
+
+  const handleCancelTrip = async (tripId: string) => {
+    if (!confirm('Are you sure you want to cancel this trip?')) return;
+    try {
+      await api.post(`/trips/${tripId}/cancel`, {});
+      fetchTrips();
+    } catch (err: any) {
+      alert(err.response?.data?.message || 'Failed to cancel trip');
+    }
+  };
+
   const inFlightTrips = trips.filter(
     (t) => t.status === 'Dispatched' || t.status === 'Draft'
   );
@@ -432,16 +454,35 @@ export const TripsPage: React.FC = () => {
                   </div>
                 </div>
                 {trip.status === 'Draft' && (
-                  <button
-                    onClick={() => handleDispatchExisting(trip.id)}
-                    className="mt-3 w-full py-2 rounded-xl bg-blue-600/15 border border-blue-500/30 text-blue-400 text-xs font-semibold hover:bg-blue-600/25 transition"
-                  >
-                    Dispatch Now
-                  </button>
+                  <div className="mt-3 flex items-center gap-2">
+                    <button
+                      onClick={() => handleDispatchExisting(trip.id)}
+                      className="flex-1 py-2 rounded-xl bg-blue-600/15 border border-blue-500/30 text-blue-400 text-xs font-semibold hover:bg-blue-600/25 transition"
+                    >
+                      Dispatch Now
+                    </button>
+                    <button
+                      onClick={() => handleCancelTrip(trip.id)}
+                      className="py-2 px-3 rounded-xl bg-red-600/15 border border-red-500/30 text-red-400 text-xs font-semibold hover:bg-red-600/25 transition"
+                    >
+                      Cancel
+                    </button>
+                  </div>
                 )}
                 {trip.status === 'Dispatched' && (
-                  <div className="mt-3 text-xs text-blue-400/70 text-center">
-                    In transit
+                  <div className="mt-3 flex items-center gap-2">
+                    <button
+                      onClick={() => handleCompleteTrip(trip)}
+                      className="flex-1 py-2 rounded-xl bg-emerald-600/15 border border-emerald-500/30 text-emerald-400 text-xs font-semibold hover:bg-emerald-600/25 transition"
+                    >
+                      Complete Trip
+                    </button>
+                    <button
+                      onClick={() => handleCancelTrip(trip.id)}
+                      className="py-2 px-3 rounded-xl bg-red-600/15 border border-red-500/30 text-red-400 text-xs font-semibold hover:bg-red-600/25 transition"
+                    >
+                      Cancel
+                    </button>
                   </div>
                 )}
               </div>
