@@ -6,3 +6,4 @@ export * from './TripsPage';
 export * from './FuelExpensePage';
 export * from './DashboardPage';
 export * from './AnalyticsPage';
+export * from './SettingsPage';

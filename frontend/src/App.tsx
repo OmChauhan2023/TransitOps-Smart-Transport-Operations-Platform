@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { LoginPage, FleetPage, DriversPage, TripsPage, MaintenancePage, FuelExpensePage, DashboardPage, AnalyticsPage } from './pages';
+import { LoginPage, FleetPage, DriversPage, TripsPage, MaintenancePage, FuelExpensePage, DashboardPage, AnalyticsPage, SettingsPage } from './pages';
 import type { User } from './types/auth';
 
 type Page = 'Dashboard' | 'Fleet' | 'Drivers' | 'Trips' | 'Maintenance' | 'Fuel & Expenses' | 'Analytics' | 'Settings';
@@ -84,6 +84,7 @@ function App() {
       case 'Analytics':
         return <AnalyticsPage />;
       case 'Settings':
+        return <SettingsPage />;
       default:
         return (
           <div className="p-12 rounded-2xl bg-[#0e1422] border border-slate-800 text-center">
