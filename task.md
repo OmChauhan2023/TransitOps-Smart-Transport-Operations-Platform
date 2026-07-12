@@ -14,7 +14,7 @@
 - [x] **Task 12**: Maintenance API (creating active record → vehicle In Shop; closing → Available unless Retired)
 - [x] **Task 13**: **Screen 5** — Maintenance UI (log form, service log table, state diagram note)
 - [x] **Task 14**: Fuel/Expense API + operational cost aggregation (Fuel + Maintenance)
-- [ ] **Task 15**: **Screen 6** — Fuel & Expense Management UI (fuel logs, other expenses, total cost line)
+- [x] **Task 15**: **Screen 6** — Fuel & Expense Management UI (fuel logs, other expenses, total cost line)
 - [ ] **Task 16**: **Screen 1** — Dashboard KPI aggregation endpoints
 - [ ] **Task 17**: **Screen 1** — Dashboard UI (KPI cards, filters, Recent Trips table, Vehicle Status bars)
 - [ ] **Task 18**: **Screen 7** — Analytics endpoints + CSV export
