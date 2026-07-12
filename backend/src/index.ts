@@ -7,6 +7,7 @@ dotenv.config();
 import authRoutes from './routes/auth.routes';
 import vehicleRoutes from './routes/vehicle.routes';
 import driverRoutes from './routes/driver.routes';
+import tripRoutes from './routes/trip.routes';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -23,6 +24,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/drivers', driverRoutes);
+app.use('/api/trips', tripRoutes);
 
 // 404 fallback
 app.use((req, res) => {
