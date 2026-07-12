@@ -1,17 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import api from '../services/api';
 import type { DashboardSummary } from '../types/dashboard';
+import { KpiCard, StatusBadge } from '../components';
 
 interface DashboardPageProps {
   onNavigate?: (page: any) => void;
 }
-
-const STATUS_COLORS: Record<string, string> = {
-  Draft: 'bg-slate-500/15 text-slate-400 border-slate-500/30',
-  Dispatched: 'bg-blue-500/15 text-blue-400 border-blue-500/30',
-  Completed: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
-  Cancelled: 'bg-red-500/15 text-red-400 border-red-500/30',
-};
 
 export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
@@ -35,8 +29,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-24 text-slate-400">
-        <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mr-3" />
+      <div className="flex items-center justify-center py-24 text-[#6B6976]">
+        <div className="w-6 h-6 border-2 border-[#5B2EBF] border-t-transparent rounded-full animate-spin mr-3" />
         Loading Executive Command Center…
       </div>
     );
@@ -67,27 +61,39 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
   const recentTrips = summary?.recentTrips || [];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8" data-testid="dashboard-page">
       {/* Header & Quick Actions */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">
-            Executive Command Center
+          <h1
+            className="text-3xl font-bold tracking-tight"
+            style={{ color: '#1B1A22', fontFamily: 'Archivo, system-ui, sans-serif' }}
+          >
+            Operations Dashboard
           </h1>
-          <p className="text-sm text-slate-400 mt-1">
-            Real-time telemetry, operational status, and fleet dispatch overview
+          <p className="text-sm mt-1" style={{ color: '#6B6976' }}>
+            Live snapshot of the fleet · updated just now
           </p>
         </div>
         <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 text-xs font-mono mr-2" style={{ color: '#6B6976' }}>
+            <span
+              className="w-2 h-2 rounded-full animate-station-pulse"
+              style={{ backgroundColor: '#22B573' }}
+            />
+            SYSTEM · LIVE
+          </div>
           <button
             onClick={() => onNavigate?.('Trips')}
-            className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold shadow-lg shadow-blue-600/25 transition"
+            className="px-4 py-2.5 rounded-lg text-white text-sm font-semibold transition cursor-pointer"
+            style={{ backgroundColor: '#5B2EBF' }}
           >
             + Dispatch Trip
           </button>
           <button
             onClick={() => onNavigate?.('Fleet')}
-            className="px-4 py-2.5 rounded-xl bg-[#151d30] hover:bg-slate-800 border border-slate-700 text-white text-sm font-semibold transition"
+            className="px-4 py-2.5 rounded-lg bg-white hover:bg-gray-50 text-sm font-semibold transition cursor-pointer"
+            style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
           >
             Manage Fleet
           </button>
@@ -95,117 +101,81 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
       </div>
 
       {/* KPI Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        {/* Active Fleet */}
-        <div className="p-5 rounded-2xl bg-[#0e1422] border border-slate-800">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-              Active Fleet
-            </span>
-            <span className="px-2.5 py-0.5 rounded-full bg-blue-500/15 text-blue-400 text-xs font-semibold">
-              {kpis.utilizationRate}% Utilized
-            </span>
-          </div>
-          <div className="text-3xl font-extrabold text-white font-mono">
-            {kpis.activeVehicles}{' '}
-            <span className="text-base font-normal text-slate-500">
-              / {kpis.totalVehicles} total
-            </span>
-          </div>
-          <div className="text-xs text-slate-400 mt-2">
-            {kpis.availableVehicles} available for dispatch
-          </div>
-        </div>
-
-        {/* Pending Dispatches */}
-        <div className="p-5 rounded-2xl bg-[#0e1422] border border-slate-800">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-              Pending Dispatches
-            </span>
-            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-          </div>
-          <div className="text-3xl font-extrabold text-white font-mono">
-            {kpis.pendingDispatches}
-          </div>
-          <div className="text-xs text-slate-400 mt-2">
-            Draft trips awaiting driver assignment
-          </div>
-        </div>
-
-        {/* Active Drivers */}
-        <div className="p-5 rounded-2xl bg-[#0e1422] border border-slate-800">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-              Active Drivers
-            </span>
-            <span className="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 text-xs font-semibold">
-              On Duty
-            </span>
-          </div>
-          <div className="text-3xl font-extrabold text-white font-mono">
-            {kpis.activeDrivers}{' '}
-            <span className="text-base font-normal text-slate-500">
-              / {kpis.totalDrivers} total
-            </span>
-          </div>
-          <div className="text-xs text-slate-400 mt-2">
-            {kpis.availableDrivers} drivers ready
-          </div>
-        </div>
-
-        {/* Vehicles In Shop */}
-        <div className="p-5 rounded-2xl bg-[#0e1422] border border-slate-800">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-              Vehicles In Shop
-            </span>
-            <span className="px-2 py-0.5 rounded bg-amber-500/15 text-amber-400 text-xs font-semibold">
-              Maintenance
-            </span>
-          </div>
-          <div className="text-3xl font-extrabold text-white font-mono">
-            {kpis.inShopVehicles}
-          </div>
-          <div className="text-xs text-slate-400 mt-2">
-            {kpis.retiredVehicles} retired units excluded
-          </div>
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4" data-testid="kpi-row">
+        <KpiCard
+          testId="kpi-active-fleet"
+          label="Active Fleet"
+          value={kpis.activeVehicles}
+          suffix={`/ ${kpis.totalVehicles}`}
+          accent="blue"
+        />
+        <KpiCard
+          testId="kpi-pending-dispatches"
+          label="Pending Dispatches"
+          value={kpis.pendingDispatches}
+          accent="amber"
+        />
+        <KpiCard
+          testId="kpi-active-drivers"
+          label="Active Drivers"
+          value={kpis.activeDrivers}
+          suffix={`/ ${kpis.totalDrivers}`}
+          accent="green"
+        />
+        <KpiCard
+          testId="kpi-utilization"
+          label="Fleet Utilization"
+          value={kpis.utilizationRate}
+          suffix="%"
+          accent="purple"
+        />
       </div>
 
-      {/* Fleet Status Distribution Bars */}
-      <div className="p-6 rounded-2xl bg-[#0e1422] border border-slate-800">
-        <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">
-          Fleet Status Distribution
-        </h3>
+      {/* Fleet Status Distribution Panel */}
+      <div
+        className="rounded-xl p-6 bg-white"
+        style={{ border: '1px solid #EDEDF2' }}
+        data-testid="vehicle-status-panel"
+      >
+        <div className="flex items-center justify-between mb-5">
+          <h2
+            className="font-semibold text-base"
+            style={{ color: '#1B1A22', fontFamily: 'Archivo, system-ui, sans-serif' }}
+          >
+            Vehicle Status Distribution
+          </h2>
+          <span className="text-xs font-mono" style={{ color: '#6B6976' }}>
+            n = {kpis.totalVehicles}
+          </span>
+        </div>
 
         {/* Multi-segment distribution bar */}
-        <div className="w-full h-4 rounded-full bg-slate-800 flex overflow-hidden mb-6">
+        <div className="w-full h-3 rounded-full bg-[#EDEDF2] flex overflow-hidden mb-6">
           {breakdown.Available.percentage > 0 && (
             <div
-              style={{ width: `${breakdown.Available.percentage}%` }}
-              className="bg-emerald-500 h-full transition-all"
+              style={{ width: `${breakdown.Available.percentage}%`, backgroundColor: '#22B573' }}
+              className="h-full transition-all"
               title={`Available: ${breakdown.Available.count}`}
             />
           )}
           {breakdown.OnTrip.percentage > 0 && (
             <div
-              style={{ width: `${breakdown.OnTrip.percentage}%` }}
-              className="bg-blue-500 h-full transition-all"
+              style={{ width: `${breakdown.OnTrip.percentage}%`, backgroundColor: '#3373DC' }}
+              className="h-full transition-all"
               title={`On Trip: ${breakdown.OnTrip.count}`}
             />
           )}
           {breakdown.InShop.percentage > 0 && (
             <div
-              style={{ width: `${breakdown.InShop.percentage}%` }}
-              className="bg-amber-500 h-full transition-all"
+              style={{ width: `${breakdown.InShop.percentage}%`, backgroundColor: '#E8952E' }}
+              className="h-full transition-all"
               title={`In Shop: ${breakdown.InShop.count}`}
             />
           )}
           {breakdown.Retired.percentage > 0 && (
             <div
-              style={{ width: `${breakdown.Retired.percentage}%` }}
-              className="bg-red-500 h-full transition-all"
+              style={{ width: `${breakdown.Retired.percentage}%`, backgroundColor: '#DB4444' }}
+              className="h-full transition-all"
               title={`Retired: ${breakdown.Retired.count}`}
             />
           )}
@@ -213,53 +183,53 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
 
         {/* Legend */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="p-3 rounded-xl bg-[#151d30] border border-slate-800">
-            <div className="flex items-center gap-2 text-xs text-emerald-400 font-semibold mb-1">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+          <div className="p-3 rounded-xl bg-[#FCFCFB]" style={{ border: '1px solid #EDEDF2' }}>
+            <div className="flex items-center gap-2 text-xs font-medium mb-1" style={{ color: '#22B573' }}>
+              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: '#22B573' }} />
               Available
             </div>
-            <div className="text-lg font-bold text-white">
+            <div className="text-lg font-bold" style={{ color: '#1B1A22' }}>
               {breakdown.Available.count}{' '}
-              <span className="text-xs text-slate-500 font-normal">
+              <span className="text-xs font-normal" style={{ color: '#6B6976' }}>
                 ({breakdown.Available.percentage}%)
               </span>
             </div>
           </div>
 
-          <div className="p-3 rounded-xl bg-[#151d30] border border-slate-800">
-            <div className="flex items-center gap-2 text-xs text-blue-400 font-semibold mb-1">
-              <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
+          <div className="p-3 rounded-xl bg-[#FCFCFB]" style={{ border: '1px solid #EDEDF2' }}>
+            <div className="flex items-center gap-2 text-xs font-medium mb-1" style={{ color: '#3373DC' }}>
+              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: '#3373DC' }} />
               On Trip
             </div>
-            <div className="text-lg font-bold text-white">
+            <div className="text-lg font-bold" style={{ color: '#1B1A22' }}>
               {breakdown.OnTrip.count}{' '}
-              <span className="text-xs text-slate-500 font-normal">
+              <span className="text-xs font-normal" style={{ color: '#6B6976' }}>
                 ({breakdown.OnTrip.percentage}%)
               </span>
             </div>
           </div>
 
-          <div className="p-3 rounded-xl bg-[#151d30] border border-slate-800">
-            <div className="flex items-center gap-2 text-xs text-amber-400 font-semibold mb-1">
-              <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+          <div className="p-3 rounded-xl bg-[#FCFCFB]" style={{ border: '1px solid #EDEDF2' }}>
+            <div className="flex items-center gap-2 text-xs font-medium mb-1" style={{ color: '#E8952E' }}>
+              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: '#E8952E' }} />
               In Shop
             </div>
-            <div className="text-lg font-bold text-white">
+            <div className="text-lg font-bold" style={{ color: '#1B1A22' }}>
               {breakdown.InShop.count}{' '}
-              <span className="text-xs text-slate-500 font-normal">
+              <span className="text-xs font-normal" style={{ color: '#6B6976' }}>
                 ({breakdown.InShop.percentage}%)
               </span>
             </div>
           </div>
 
-          <div className="p-3 rounded-xl bg-[#151d30] border border-slate-800">
-            <div className="flex items-center gap-2 text-xs text-red-400 font-semibold mb-1">
-              <span className="w-2.5 h-2.5 rounded-full bg-red-500" />
+          <div className="p-3 rounded-xl bg-[#FCFCFB]" style={{ border: '1px solid #EDEDF2' }}>
+            <div className="flex items-center gap-2 text-xs font-medium mb-1" style={{ color: '#DB4444' }}>
+              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: '#DB4444' }} />
               Retired
             </div>
-            <div className="text-lg font-bold text-white">
+            <div className="text-lg font-bold" style={{ color: '#1B1A22' }}>
               {breakdown.Retired.count}{' '}
-              <span className="text-xs text-slate-500 font-normal">
+              <span className="text-xs font-normal" style={{ color: '#6B6976' }}>
                 ({breakdown.Retired.percentage}%)
               </span>
             </div>
@@ -268,12 +238,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
       </div>
 
       {/* Recent Trips Table */}
-      <div className="rounded-2xl bg-[#0e1422] border border-slate-800 overflow-hidden">
-        <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between">
-          <h3 className="font-bold text-white">Recent Dispatched &amp; Active Trips</h3>
+      <div className="rounded-xl bg-white overflow-hidden" style={{ border: '1px solid #EDEDF2' }}>
+        <div className="px-6 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid #EDEDF2' }}>
+          <h3
+            className="font-semibold text-base"
+            style={{ color: '#1B1A22', fontFamily: 'Archivo, system-ui, sans-serif' }}
+          >
+            Recent Dispatched &amp; Active Trips
+          </h3>
           <button
             onClick={() => onNavigate?.('Trips')}
-            className="text-xs font-semibold text-blue-400 hover:text-blue-300 transition"
+            className="text-xs font-medium hover:underline cursor-pointer"
+            style={{ color: '#5B2EBF' }}
           >
             View All Trips →
           </button>
@@ -281,19 +257,31 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-800">
-                <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Trip ID</th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Route</th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Vehicle</th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Driver</th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Cargo Weight</th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Status</th>
+              <tr style={{ borderBottom: '1px solid #EDEDF2' }}>
+                <th className="text-left px-6 py-3.5 text-xs font-medium uppercase tracking-wider" style={{ color: '#6B6976' }}>
+                  Trip ID
+                </th>
+                <th className="text-left px-6 py-3.5 text-xs font-medium uppercase tracking-wider" style={{ color: '#6B6976' }}>
+                  Route
+                </th>
+                <th className="text-left px-6 py-3.5 text-xs font-medium uppercase tracking-wider" style={{ color: '#6B6976' }}>
+                  Vehicle
+                </th>
+                <th className="text-left px-6 py-3.5 text-xs font-medium uppercase tracking-wider" style={{ color: '#6B6976' }}>
+                  Driver
+                </th>
+                <th className="text-left px-6 py-3.5 text-xs font-medium uppercase tracking-wider" style={{ color: '#6B6976' }}>
+                  Cargo Weight
+                </th>
+                <th className="text-left px-6 py-3.5 text-xs font-medium uppercase tracking-wider" style={{ color: '#6B6976' }}>
+                  Status
+                </th>
               </tr>
             </thead>
             <tbody>
               {recentTrips.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-12 text-center text-slate-500">
+                  <td colSpan={6} className="px-6 py-12 text-center" style={{ color: '#6B6976' }}>
                     No recent trips logged. Dispatch a trip to see real-time activity.
                   </td>
                 </tr>
@@ -301,27 +289,26 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
                 recentTrips.map((t) => (
                   <tr
                     key={t.id}
-                    className="border-b border-slate-800/60 hover:bg-slate-800/30 transition"
+                    className="hover:bg-[#FCFCFB] transition"
+                    style={{ borderBottom: '1px solid #EDEDF2' }}
                   >
-                    <td className="px-6 py-4 font-mono font-semibold text-white">
+                    <td className="px-6 py-3.5 font-mono font-medium" style={{ color: '#1B1A22' }}>
                       {t.trip_code}
                     </td>
-                    <td className="px-6 py-4 text-slate-300">
+                    <td className="px-6 py-3.5" style={{ color: '#1B1A22' }}>
                       {t.source} → {t.destination}
                     </td>
-                    <td className="px-6 py-4 text-slate-400">
+                    <td className="px-6 py-3.5" style={{ color: '#6B6976' }}>
                       {t.vehicle.reg_number} ({t.vehicle.name})
                     </td>
-                    <td className="px-6 py-4 text-slate-400">{t.driver.name}</td>
-                    <td className="px-6 py-4 text-slate-300">{t.cargo_weight} kg</td>
-                    <td className="px-6 py-4">
-                      <span
-                        className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold border ${
-                          STATUS_COLORS[t.status] || 'bg-slate-700 text-white'
-                        }`}
-                      >
-                        {t.status}
-                      </span>
+                    <td className="px-6 py-3.5" style={{ color: '#6B6976' }}>
+                      {t.driver.name}
+                    </td>
+                    <td className="px-6 py-3.5 font-mono" style={{ color: '#1B1A22' }}>
+                      {t.cargo_weight} kg
+                    </td>
+                    <td className="px-6 py-3.5">
+                      <StatusBadge status={t.status} />
                     </td>
                   </tr>
                 ))
@@ -333,3 +320,5 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
     </div>
   );
 };
+
+export default DashboardPage;
