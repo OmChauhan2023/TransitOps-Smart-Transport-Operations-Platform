@@ -165,6 +165,78 @@ async function main() {
   }
   console.log('✓ Seeded maintenance logs.');
 
+  // 5. Create Demo Fuel Logs
+  const truck1 = createdVehicles['MH 12 AB 1234'];
+  const truck2 = createdVehicles['GJ 01 DL 5678'];
+  const pickup = createdVehicles['DL 04 KA 9012'];
+
+  if (truck1 && truck2 && pickup) {
+    const fuelData = [
+      {
+        vehicle_id: truck1.id,
+        date: new Date(Date.now() - 2 * 24 * 3600 * 1000),
+        liters: 120.0,
+        fuel_cost: 11520.0,
+      },
+      {
+        vehicle_id: truck1.id,
+        date: new Date(Date.now() - 5 * 24 * 3600 * 1000),
+        liters: 150.0,
+        fuel_cost: 14400.0,
+      },
+      {
+        vehicle_id: truck2.id,
+        date: new Date(Date.now() - 3 * 24 * 3600 * 1000),
+        liters: 180.0,
+        fuel_cost: 17280.0,
+      },
+      {
+        vehicle_id: pickup.id,
+        date: new Date(Date.now() - 1 * 24 * 3600 * 1000),
+        liters: 45.0,
+        fuel_cost: 4320.0,
+      },
+    ];
+
+    for (const fl of fuelData) {
+      await prisma.fuelLog.create({ data: fl });
+    }
+    console.log('✓ Seeded demo fuel logs.');
+
+    // 6. Create Demo Expenses
+    const expenseData = [
+      {
+        vehicle_id: truck1.id,
+        toll: 1250.0,
+        other: 650.0,
+        maintenance_linked: 0.0,
+        total: 1900.0,
+        status: 'Logged',
+      },
+      {
+        vehicle_id: truck2.id,
+        toll: 2400.0,
+        other: 1100.0,
+        maintenance_linked: 0.0,
+        total: 3500.0,
+        status: 'Logged',
+      },
+      {
+        vehicle_id: pickup.id,
+        toll: 450.0,
+        other: 300.0,
+        maintenance_linked: 0.0,
+        total: 750.0,
+        status: 'Logged',
+      },
+    ];
+
+    for (const exp of expenseData) {
+      await prisma.expense.create({ data: exp });
+    }
+    console.log('✓ Seeded demo expenses.');
+  }
+
   console.log('TransitOps database seeded successfully!');
 }
 

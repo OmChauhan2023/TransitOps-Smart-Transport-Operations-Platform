@@ -233,14 +233,17 @@ export const FuelExpensePage: React.FC = () => {
         </div>
 
         {/* Total Other Expenses */}
-        <div className="p-5 rounded-2xl bg-[#131a2a] border border-slate-800">
-          <div className="text-xs font-semibold text-purple-400 uppercase tracking-wider mb-1">
+        <div
+          className="p-5 rounded-xl bg-white"
+          style={{ border: '1px solid #EDEDF2' }}
+        >
+          <div className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#9B51E0' }}>
             Other Expenses
           </div>
-          <div className="text-2xl font-bold text-white">
+          <div className="text-2xl font-bold" style={{ color: '#1B1A22' }}>
             ₹{summary.overallOtherExpenseCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </div>
-          <div className="text-xs text-slate-400 mt-1">
+          <div className="text-xs mt-1" style={{ color: '#6B6976' }}>
             Tolls, Parking & Incidentals
           </div>
         </div>
@@ -248,33 +251,33 @@ export const FuelExpensePage: React.FC = () => {
 
       {/* Filter and Tab Navigation */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-        <div className="flex items-center gap-2 p-1 rounded-xl bg-[#0e1422] border border-slate-800">
+        <div className="flex items-center gap-2 p-1 rounded-xl bg-white" style={{ border: '1px solid #EDEDF2' }}>
           <button
             onClick={() => setActiveTab('fuel')}
-            className={`px-4 py-2 rounded-lg text-xs font-semibold transition ${
+            className={`px-4 py-2 rounded-lg text-xs font-semibold transition cursor-pointer ${
               activeTab === 'fuel'
                 ? 'bg-blue-600 text-white shadow'
-                : 'text-slate-400 hover:text-white'
+                : 'text-gray-500 hover:text-gray-900'
             }`}
           >
             Fuel Logs ({fuelLogs.length})
           </button>
           <button
             onClick={() => setActiveTab('expenses')}
-            className={`px-4 py-2 rounded-lg text-xs font-semibold transition ${
+            className={`px-4 py-2 rounded-lg text-xs font-semibold transition cursor-pointer ${
               activeTab === 'expenses'
                 ? 'bg-blue-600 text-white shadow'
-                : 'text-slate-400 hover:text-white'
+                : 'text-gray-500 hover:text-gray-900'
             }`}
           >
             Other Expenses ({expenses.length})
           </button>
           <button
             onClick={() => setActiveTab('breakdown')}
-            className={`px-4 py-2 rounded-lg text-xs font-semibold transition ${
+            className={`px-4 py-2 rounded-lg text-xs font-semibold transition cursor-pointer ${
               activeTab === 'breakdown'
                 ? 'bg-blue-600 text-white shadow'
-                : 'text-slate-400 hover:text-white'
+                : 'text-gray-500 hover:text-gray-900'
             }`}
           >
             Cost Breakdown by Vehicle
@@ -282,11 +285,12 @@ export const FuelExpensePage: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs text-slate-400 font-medium">Filter Vehicle:</span>
+          <span className="text-xs font-medium" style={{ color: '#6B6976' }}>Filter Vehicle:</span>
           <select
             value={filterVehicleId}
             onChange={(e) => setFilterVehicleId(e.target.value)}
-            className="px-3 py-2 rounded-xl bg-[#151d30] border border-slate-700 text-xs text-white focus:outline-none focus:border-blue-500 transition"
+            className="px-3 py-2 rounded-xl bg-[#FCFCFB] text-xs focus:outline-none transition"
+            style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
           >
             <option value="All">All Vehicles</option>
             {vehicles.map((v) => (
@@ -300,29 +304,29 @@ export const FuelExpensePage: React.FC = () => {
 
       {/* TAB 1: FUEL LOGS */}
       {activeTab === 'fuel' && (
-        <div className="rounded-2xl bg-[#0e1422] border border-slate-800 overflow-hidden">
+        <div className="rounded-xl bg-white overflow-hidden" style={{ border: '1px solid #EDEDF2' }}>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-800">
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Date</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Vehicle</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Liters</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Cost</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Cost / Liter</th>
-                  <th className="text-right px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Actions</th>
+                <tr style={{ borderBottom: '1px solid #EDEDF2', backgroundColor: '#FCFCFB' }}>
+                  <th className="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Date</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Vehicle</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Liters</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Total Cost</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Cost / Liter</th>
+                  <th className="text-right px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y text-sm" style={{ borderColor: '#EDEDF2' }}>
                 {loading ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-16 text-center text-slate-500">
+                    <td colSpan={6} className="px-6 py-16 text-center" style={{ color: '#6B6976' }}>
                       Loading fuel logs…
                     </td>
                   </tr>
                 ) : fuelLogs.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-16 text-center text-slate-500">
+                    <td colSpan={6} className="px-6 py-16 text-center" style={{ color: '#6B6976' }}>
                       No fuel records found. Click &quot;Log Fuel&quot; to add one.
                     </td>
                   </tr>
@@ -332,30 +336,31 @@ export const FuelExpensePage: React.FC = () => {
                     return (
                       <tr
                         key={log.id}
-                        className="border-b border-slate-800/60 hover:bg-slate-800/30 transition"
+                        className="hover:bg-slate-50 transition"
                       >
-                        <td className="px-6 py-4 text-slate-300">
+                        <td className="px-6 py-4" style={{ color: '#1B1A22' }}>
                           {new Date(log.date).toLocaleDateString()}
                         </td>
                         <td className="px-6 py-4">
-                          <div className="font-mono font-semibold text-white">
+                          <div className="font-mono font-semibold" style={{ color: '#1B1A22' }}>
                             {log.vehicle.reg_number}
                           </div>
-                          <div className="text-xs text-slate-400">{log.vehicle.name}</div>
+                          <div className="text-xs" style={{ color: '#6B6976' }}>{log.vehicle.name}</div>
                         </td>
-                        <td className="px-6 py-4 font-mono text-slate-300">
+                        <td className="px-6 py-4 font-mono" style={{ color: '#1B1A22' }}>
                           {log.liters.toLocaleString()} L
                         </td>
-                        <td className="px-6 py-4 font-mono font-semibold text-emerald-400">
+                        <td className="px-6 py-4 font-mono font-semibold" style={{ color: '#22B573' }}>
                           ₹{log.fuel_cost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </td>
-                        <td className="px-6 py-4 font-mono text-slate-400">
+                        <td className="px-6 py-4 font-mono" style={{ color: '#6B6976' }}>
                           ₹{costPerL.toFixed(2)}
                         </td>
                         <td className="px-6 py-4 text-right">
                           <button
                             onClick={() => handleDeleteFuel(log.id)}
-                            className="p-2 rounded-lg hover:bg-slate-700/50 text-slate-400 hover:text-red-400 transition"
+                            className="p-2 rounded-lg hover:bg-gray-100 transition cursor-pointer"
+                            style={{ color: '#6B6976' }}
                             title="Delete"
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -375,29 +380,29 @@ export const FuelExpensePage: React.FC = () => {
 
       {/* TAB 2: OTHER EXPENSES */}
       {activeTab === 'expenses' && (
-        <div className="rounded-2xl bg-[#0e1422] border border-slate-800 overflow-hidden">
+        <div className="rounded-xl bg-white overflow-hidden" style={{ border: '1px solid #EDEDF2' }}>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-800">
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Vehicle</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Toll Fees</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Other / Incidentals</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Maint. Linked</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Amount</th>
-                  <th className="text-right px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Actions</th>
+                <tr style={{ borderBottom: '1px solid #EDEDF2', backgroundColor: '#FCFCFB' }}>
+                  <th className="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Vehicle</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Toll Fees</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Other / Incidentals</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Maint. Linked</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Total Amount</th>
+                  <th className="text-right px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y text-sm" style={{ borderColor: '#EDEDF2' }}>
                 {loading ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-16 text-center text-slate-500">
+                    <td colSpan={6} className="px-6 py-16 text-center" style={{ color: '#6B6976' }}>
                       Loading expenses…
                     </td>
                   </tr>
                 ) : expenses.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-16 text-center text-slate-500">
+                    <td colSpan={6} className="px-6 py-16 text-center" style={{ color: '#6B6976' }}>
                       No expense records found. Click &quot;Log Expense&quot; to add one.
                     </td>
                   </tr>
@@ -405,30 +410,31 @@ export const FuelExpensePage: React.FC = () => {
                   expenses.map((exp) => (
                     <tr
                       key={exp.id}
-                      className="border-b border-slate-800/60 hover:bg-slate-800/30 transition"
+                      className="hover:bg-slate-50 transition"
                     >
                       <td className="px-6 py-4">
-                        <div className="font-mono font-semibold text-white">
+                        <div className="font-mono font-semibold" style={{ color: '#1B1A22' }}>
                           {exp.vehicle.reg_number}
                         </div>
-                        <div className="text-xs text-slate-400">{exp.vehicle.name}</div>
+                        <div className="text-xs" style={{ color: '#6B6976' }}>{exp.vehicle.name}</div>
                       </td>
-                      <td className="px-6 py-4 font-mono text-slate-300">
+                      <td className="px-6 py-4 font-mono" style={{ color: '#1B1A22' }}>
                         ₹{exp.toll.toFixed(2)}
                       </td>
-                      <td className="px-6 py-4 font-mono text-slate-300">
+                      <td className="px-6 py-4 font-mono" style={{ color: '#1B1A22' }}>
                         ₹{exp.other.toFixed(2)}
                       </td>
-                      <td className="px-6 py-4 font-mono text-slate-400">
+                      <td className="px-6 py-4 font-mono" style={{ color: '#6B6976' }}>
                         ₹{exp.maintenance_linked.toFixed(2)}
                       </td>
-                      <td className="px-6 py-4 font-mono font-semibold text-amber-400">
+                      <td className="px-6 py-4 font-mono font-semibold" style={{ color: '#E8952E' }}>
                         ₹{exp.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </td>
                       <td className="px-6 py-4 text-right">
                         <button
                           onClick={() => handleDeleteExpense(exp.id)}
-                          className="p-2 rounded-lg hover:bg-slate-700/50 text-slate-400 hover:text-red-400 transition"
+                          className="p-2 rounded-lg hover:bg-gray-100 transition cursor-pointer"
+                          style={{ color: '#6B6976' }}
                           title="Delete"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -447,29 +453,29 @@ export const FuelExpensePage: React.FC = () => {
 
       {/* TAB 3: BREAKDOWN BY VEHICLE */}
       {activeTab === 'breakdown' && (
-        <div className="rounded-2xl bg-[#0e1422] border border-slate-800 overflow-hidden">
+        <div className="rounded-xl bg-white overflow-hidden" style={{ border: '1px solid #EDEDF2' }}>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-800">
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Reg. No.</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Vehicle Model</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Fuel Cost</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Maintenance Cost</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Other Expenses</th>
-                  <th className="text-right px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Operational Cost</th>
+                <tr style={{ borderBottom: '1px solid #EDEDF2', backgroundColor: '#FCFCFB' }}>
+                  <th className="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Reg. No.</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Vehicle Model</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Fuel Cost</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Maintenance Cost</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Other Expenses</th>
+                  <th className="text-right px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Total Operational Cost</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y text-sm" style={{ borderColor: '#EDEDF2' }}>
                 {loading ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-16 text-center text-slate-500">
+                    <td colSpan={6} className="px-6 py-16 text-center" style={{ color: '#6B6976' }}>
                       Loading cost breakdown…
                     </td>
                   </tr>
                 ) : !summaryData?.byVehicle || summaryData.byVehicle.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-16 text-center text-slate-500">
+                    <td colSpan={6} className="px-6 py-16 text-center" style={{ color: '#6B6976' }}>
                       No cost data available.
                     </td>
                   </tr>
@@ -477,24 +483,24 @@ export const FuelExpensePage: React.FC = () => {
                   summaryData.byVehicle.map((v) => (
                     <tr
                       key={v.vehicle_id}
-                      className="border-b border-slate-800/60 hover:bg-slate-800/30 transition"
+                      className="hover:bg-slate-50 transition"
                     >
-                      <td className="px-6 py-4 font-mono font-semibold text-white">
+                      <td className="px-6 py-4 font-mono font-semibold" style={{ color: '#1B1A22' }}>
                         {v.reg_number}
                       </td>
-                      <td className="px-6 py-4 text-slate-300">
+                      <td className="px-6 py-4" style={{ color: '#1B1A22' }}>
                         {v.name} ({v.type})
                       </td>
-                      <td className="px-6 py-4 font-mono text-slate-300">
+                      <td className="px-6 py-4 font-mono" style={{ color: '#1B1A22' }}>
                         ₹{v.fuelCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </td>
-                      <td className="px-6 py-4 font-mono text-slate-300">
+                      <td className="px-6 py-4 font-mono" style={{ color: '#1B1A22' }}>
                         ₹{v.maintenanceCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </td>
-                      <td className="px-6 py-4 font-mono text-slate-300">
+                      <td className="px-6 py-4 font-mono" style={{ color: '#1B1A22' }}>
                         ₹{v.otherExpenseCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </td>
-                      <td className="px-6 py-4 text-right font-mono font-bold text-blue-400">
+                      <td className="px-6 py-4 text-right font-mono font-bold" style={{ color: '#3373DC' }}>
                         ₹{v.totalOperationalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </td>
                     </tr>
@@ -507,18 +513,20 @@ export const FuelExpensePage: React.FC = () => {
       )}
 
       {/* ADD FUEL MODAL */}
+      {/* ADD FUEL MODAL */}
       {showFuelModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={() => setShowFuelModal(false)}
           />
-          <div className="relative w-full max-w-md mx-4 bg-[#0e1422] border border-slate-700 rounded-2xl shadow-2xl">
-            <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between">
-              <h3 className="text-lg font-bold text-white">Log Fuel Record</h3>
+          <div className="relative w-full max-w-md mx-4 bg-white border rounded-2xl shadow-2xl" style={{ borderColor: '#EDEDF2' }}>
+            <div className="px-6 py-4 border-b flex items-center justify-between" style={{ borderColor: '#EDEDF2' }}>
+              <h3 className="text-lg font-bold" style={{ color: '#1B1A22' }}>Log Fuel Record</h3>
               <button
                 onClick={() => setShowFuelModal(false)}
-                className="p-1 rounded-lg hover:bg-slate-700/50 text-slate-400 hover:text-white transition"
+                className="p-1 rounded-lg hover:bg-gray-100 transition cursor-pointer"
+                style={{ color: '#6B6976' }}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -528,19 +536,20 @@ export const FuelExpensePage: React.FC = () => {
 
             <form onSubmit={handleCreateFuel} className="p-6 space-y-4">
               {error && (
-                <div className="px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/30 text-sm text-red-300">
+                <div className="px-4 py-3 rounded-xl text-sm" style={{ backgroundColor: '#DB444415', border: '1px solid #DB444440', color: '#DB4444' }}>
                   {error}
                 </div>
               )}
 
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: '#6B6976' }}>
                   Select Vehicle
                 </label>
                 <select
                   value={fuelForm.vehicle_id}
                   onChange={(e) => setFuelForm({ ...fuelForm, vehicle_id: e.target.value })}
-                  className="w-full px-3 py-2.5 rounded-xl bg-[#151d30] border border-slate-700 text-white text-sm focus:outline-none focus:border-blue-500 transition"
+                  className="w-full px-3 py-2.5 rounded-xl bg-[#FCFCFB] text-sm focus:outline-none transition"
+                  style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
                   required
                 >
                   <option value="">Choose vehicle…</option>
@@ -553,21 +562,22 @@ export const FuelExpensePage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: '#6B6976' }}>
                   Date
                 </label>
                 <input
                   type="date"
                   value={fuelForm.date}
                   onChange={(e) => setFuelForm({ ...fuelForm, date: e.target.value })}
-                  className="w-full px-3 py-2.5 rounded-xl bg-[#151d30] border border-slate-700 text-white text-sm focus:outline-none focus:border-blue-500 transition"
+                  className="w-full px-3 py-2.5 rounded-xl bg-[#FCFCFB] text-sm focus:outline-none transition"
+                  style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
                   required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: '#6B6976' }}>
                     Liters
                   </label>
                   <input
@@ -576,14 +586,15 @@ export const FuelExpensePage: React.FC = () => {
                     value={fuelForm.liters}
                     onChange={(e) => setFuelForm({ ...fuelForm, liters: e.target.value })}
                     placeholder="e.g. 50"
-                    className="w-full px-3 py-2.5 rounded-xl bg-[#151d30] border border-slate-700 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-blue-500 transition"
+                    className="w-full px-3 py-2.5 rounded-xl bg-[#FCFCFB] text-sm focus:outline-none transition"
+                    style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
                     required
                     min={0}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: '#6B6976' }}>
                     Total Fuel Cost (₹)
                   </label>
                   <input
@@ -592,7 +603,8 @@ export const FuelExpensePage: React.FC = () => {
                     value={fuelForm.fuel_cost}
                     onChange={(e) => setFuelForm({ ...fuelForm, fuel_cost: e.target.value })}
                     placeholder="e.g. 85.50"
-                    className="w-full px-3 py-2.5 rounded-xl bg-[#151d30] border border-slate-700 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-blue-500 transition"
+                    className="w-full px-3 py-2.5 rounded-xl bg-[#FCFCFB] text-sm focus:outline-none transition"
+                    style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
                     required
                     min={0}
                   />
@@ -603,14 +615,15 @@ export const FuelExpensePage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowFuelModal(false)}
-                  className="flex-1 py-2.5 px-4 rounded-xl border border-slate-700 text-slate-300 text-sm font-semibold hover:bg-slate-800 transition"
+                  className="flex-1 py-2.5 px-4 rounded-xl font-semibold transition cursor-pointer"
+                  style={{ backgroundColor: '#FCFCFB', border: '1px solid #EDEDF2', color: '#1B1A22' }}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="flex-1 py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold shadow-lg shadow-blue-600/25 transition disabled:opacity-50"
+                  className="flex-1 py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold shadow-lg shadow-blue-600/25 transition disabled:opacity-50 cursor-pointer"
                 >
                   {saving ? 'Saving…' : 'Save Fuel Log'}
                 </button>
@@ -622,17 +635,18 @@ export const FuelExpensePage: React.FC = () => {
 
       {/* ADD EXPENSE MODAL */}
       {showExpenseModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={() => setShowExpenseModal(false)}
           />
-          <div className="relative w-full max-w-md mx-4 bg-[#0e1422] border border-slate-700 rounded-2xl shadow-2xl">
-            <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between">
-              <h3 className="text-lg font-bold text-white">Log Expense</h3>
+          <div className="relative w-full max-w-md mx-4 bg-white border rounded-2xl shadow-2xl" style={{ borderColor: '#EDEDF2' }}>
+            <div className="px-6 py-4 border-b flex items-center justify-between" style={{ borderColor: '#EDEDF2' }}>
+              <h3 className="text-lg font-bold" style={{ color: '#1B1A22' }}>Log Expense</h3>
               <button
                 onClick={() => setShowExpenseModal(false)}
-                className="p-1 rounded-lg hover:bg-slate-700/50 text-slate-400 hover:text-white transition"
+                className="p-1 rounded-lg hover:bg-gray-100 transition cursor-pointer"
+                style={{ color: '#6B6976' }}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -642,19 +656,20 @@ export const FuelExpensePage: React.FC = () => {
 
             <form onSubmit={handleCreateExpense} className="p-6 space-y-4">
               {error && (
-                <div className="px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/30 text-sm text-red-300">
+                <div className="px-4 py-3 rounded-xl text-sm" style={{ backgroundColor: '#DB444415', border: '1px solid #DB444440', color: '#DB4444' }}>
                   {error}
                 </div>
               )}
 
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: '#6B6976' }}>
                   Select Vehicle
                 </label>
                 <select
                   value={expenseForm.vehicle_id}
                   onChange={(e) => setExpenseForm({ ...expenseForm, vehicle_id: e.target.value })}
-                  className="w-full px-3 py-2.5 rounded-xl bg-[#151d30] border border-slate-700 text-white text-sm focus:outline-none focus:border-blue-500 transition"
+                  className="w-full px-3 py-2.5 rounded-xl bg-[#FCFCFB] text-sm focus:outline-none transition"
+                  style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
                   required
                 >
                   <option value="">Choose vehicle…</option>
@@ -668,7 +683,7 @@ export const FuelExpensePage: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: '#6B6976' }}>
                     Toll Fees (₹)
                   </label>
                   <input
@@ -677,13 +692,14 @@ export const FuelExpensePage: React.FC = () => {
                     value={expenseForm.toll}
                     onChange={(e) => setExpenseForm({ ...expenseForm, toll: e.target.value })}
                     placeholder="0.00"
-                    className="w-full px-3 py-2.5 rounded-xl bg-[#151d30] border border-slate-700 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-blue-500 transition"
+                    className="w-full px-3 py-2.5 rounded-xl bg-[#FCFCFB] text-sm focus:outline-none transition"
+                    style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
                     min={0}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: '#6B6976' }}>
                     Other / Incidentals (₹)
                   </label>
                   <input
@@ -692,7 +708,8 @@ export const FuelExpensePage: React.FC = () => {
                     value={expenseForm.other}
                     onChange={(e) => setExpenseForm({ ...expenseForm, other: e.target.value })}
                     placeholder="0.00"
-                    className="w-full px-3 py-2.5 rounded-xl bg-[#151d30] border border-slate-700 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-blue-500 transition"
+                    className="w-full px-3 py-2.5 rounded-xl bg-[#FCFCFB] text-sm focus:outline-none transition"
+                    style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
                     min={0}
                   />
                 </div>
@@ -702,14 +719,15 @@ export const FuelExpensePage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowExpenseModal(false)}
-                  className="flex-1 py-2.5 px-4 rounded-xl border border-slate-700 text-slate-300 text-sm font-semibold hover:bg-slate-800 transition"
+                  className="flex-1 py-2.5 px-4 rounded-xl font-semibold transition cursor-pointer"
+                  style={{ backgroundColor: '#FCFCFB', border: '1px solid #EDEDF2', color: '#1B1A22' }}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="flex-1 py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold shadow-lg shadow-blue-600/25 transition disabled:opacity-50"
+                  className="flex-1 py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold shadow-lg shadow-blue-600/25 transition disabled:opacity-50 cursor-pointer"
                 >
                   {saving ? 'Saving…' : 'Save Expense'}
                 </button>

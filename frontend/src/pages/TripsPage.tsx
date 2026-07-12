@@ -34,6 +34,25 @@ export const TripsPage: React.FC = () => {
   const cargoNum = parseFloat(form.cargo_weight as string) || 0;
   const capacityExceeded = selectedVehicle ? cargoNum > selectedVehicle.max_load : false;
 
+  // Multi-factor AI Dispatch Scoring Function
+  // Safety Score * 0.5 + Completion Rate * 0.3 + License Margin * 0.2
+  const getDriverScore = (driver: Driver) => {
+    const safetyScore = driver.safety_score || 95;
+    const completionRate = driver.trip_completion_pct || (driver as any).completion_rate || 98;
+    const expiryDate = driver.license_expiry ? new Date(driver.license_expiry).getTime() : Date.now() + 1000 * 3600 * 24 * 365;
+    const daysUntilExpiry = (expiryDate - Date.now()) / (1000 * 3600 * 24);
+    const licenseScore = daysUntilExpiry > 180 ? 100 : daysUntilExpiry > 60 ? 92 : 80;
+    return Number((safetyScore * 0.5 + completionRate * 0.3 + licenseScore * 0.2).toFixed(1));
+  };
+
+  const scoredDrivers = availableDrivers.map((d) => ({
+    driver: d,
+    score: getDriverScore(d),
+  })).sort((a, b) => b.score - a.score);
+
+  const bestDriverOption = scoredDrivers.length > 0 ? scoredDrivers[0] : null;
+  const bestVehicleOption = availableVehicles.length > 0 ? availableVehicles[0] : null;
+
   const fetchTrips = useCallback(async () => {
     setLoading(true);
     try {
@@ -283,6 +302,45 @@ export const TripsPage: React.FC = () => {
                 </div>
               </div>
 
+              {/* Smart Dispatch Recommendation Badge (Tier 1) */}
+              {bestDriverOption && bestVehicleOption && (
+                <div className="mb-5 p-4 rounded-xl border flex items-center justify-between flex-wrap gap-3" style={{ backgroundColor: '#5B2EBF0C', borderColor: '#5B2EBF33' }}>
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center font-bold text-white shadow" style={{ backgroundColor: '#5B2EBF' }}>
+                      ★
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-full" style={{ color: '#5B2EBF', backgroundColor: '#5B2EBF1A' }}>
+                          AI Dispatch Recommendation
+                        </span>
+                        <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{ color: '#22B573', backgroundColor: '#22B5731A' }}>
+                          Score: {bestDriverOption.score}
+                        </span>
+                      </div>
+                      <div className="text-xs font-medium mt-1" style={{ color: '#1B1A22' }}>
+                        Top Driver &amp; Vehicle Combo: <span className="font-bold">{bestDriverOption.driver.name}</span> + <span className="font-bold">{bestVehicleOption.reg_number} ({bestVehicleOption.name})</span>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleVehicleSelect(bestVehicleOption.id);
+                      setForm(prev => ({
+                        ...prev,
+                        vehicle_id: bestVehicleOption.id,
+                        driver_id: bestDriverOption.driver.id
+                      }));
+                    }}
+                    className="px-3.5 py-1.5 rounded-lg text-white text-xs font-semibold transition cursor-pointer shadow flex items-center gap-1.5"
+                    style={{ backgroundColor: '#5B2EBF' }}
+                  >
+                    <span>★ Auto-Select AI Recommended</span>
+                  </button>
+                </div>
+              )}
+
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                 <div>
                   <label className="block text-xs font-medium uppercase tracking-wider mb-1.5" style={{ color: '#6B6976' }}>
@@ -316,11 +374,16 @@ export const TripsPage: React.FC = () => {
                     required
                   >
                     <option value="">Select driver…</option>
-                    {availableDrivers.map((d) => (
-                      <option key={d.id} value={d.id}>
-                        {d.name} ({d.license_category})
-                      </option>
-                    ))}
+                    {scoredDrivers.map(({ driver: d, score }) => {
+                      const isTop = bestDriverOption && bestDriverOption.driver.id === d.id;
+                      return (
+                        <option key={d.id} value={d.id}>
+                          {isTop
+                            ? `★ AI RECOMMENDED: ${d.name} (Score: ${score})`
+                            : `${d.name} (${d.license_category} • Score: ${score})`}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
 

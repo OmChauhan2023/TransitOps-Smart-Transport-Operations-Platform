@@ -257,11 +257,12 @@ export const MaintenancePage: React.FC = () => {
       </div>
 
       {/* Filters */}
-      <div className="flex flex-wrap items-center gap-4 bg-[#131a2a] p-4 rounded-xl border border-slate-800">
+      <div className="flex flex-wrap items-center gap-4 bg-white p-4 rounded-xl" style={{ border: '1px solid #EDEDF2' }}>
         <select
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
-          className="px-3 py-2 rounded-lg bg-[#182236] border border-slate-700 text-sm text-slate-200 focus:outline-none focus:border-blue-500"
+          className="px-3 py-2 rounded-lg bg-[#FCFCFB] text-sm focus:outline-none"
+          style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
         >
           <option value="All">All Statuses</option>
           <option value="Active">Active</option>
@@ -271,7 +272,8 @@ export const MaintenancePage: React.FC = () => {
         <select
           value={filterVehicle}
           onChange={(e) => setFilterVehicle(e.target.value)}
-          className="px-3 py-2 rounded-lg bg-[#182236] border border-slate-700 text-sm text-slate-200 focus:outline-none focus:border-blue-500"
+          className="px-3 py-2 rounded-lg bg-[#FCFCFB] text-sm focus:outline-none"
+          style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
         >
           <option value="All">All Vehicles</option>
           {vehicles.map((v) => (
@@ -283,32 +285,32 @@ export const MaintenancePage: React.FC = () => {
       </div>
 
       {/* Service Log Table */}
-      <div className="bg-[#131a2a] rounded-2xl border border-slate-800 overflow-hidden">
+      <div className="rounded-xl bg-white overflow-hidden" style={{ border: '1px solid #EDEDF2' }}>
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-800 text-xs font-semibold uppercase tracking-wider text-slate-400 bg-[#182236]/60">
-                <th className="py-4 px-6">Vehicle</th>
-                <th className="py-4 px-6">Service Type</th>
-                <th className="py-4 px-6">Date</th>
-                <th className="py-4 px-6 text-right">Cost</th>
-                <th className="py-4 px-6 text-center">Status</th>
-                <th className="py-4 px-6 text-right">Actions</th>
+              <tr style={{ borderBottom: '1px solid #EDEDF2', backgroundColor: '#FCFCFB' }}>
+                <th className="py-4 px-6 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Vehicle</th>
+                <th className="py-4 px-6 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Service Type</th>
+                <th className="py-4 px-6 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Date</th>
+                <th className="py-4 px-6 text-right text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Cost</th>
+                <th className="py-4 px-6 text-center text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Status</th>
+                <th className="py-4 px-6 text-right text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60 text-sm">
+            <tbody className="divide-y text-sm" style={{ borderColor: '#EDEDF2' }}>
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-slate-500">
+                  <td colSpan={6} className="py-12 text-center" style={{ color: '#6B6976' }}>
                     <div className="flex items-center justify-center gap-3">
-                      <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                      <div className="w-5 h-5 border-2 border-[#5B2EBF] border-t-transparent rounded-full animate-spin" />
                       Loading service logs…
                     </div>
                   </td>
                 </tr>
               ) : logs.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-slate-500">
+                  <td colSpan={6} className="py-12 text-center" style={{ color: '#6B6976' }}>
                     No maintenance records found. Log your first service to get started.
                   </td>
                 </tr>
@@ -316,21 +318,21 @@ export const MaintenancePage: React.FC = () => {
                 logs.map((log) => (
                   <tr
                     key={log.id}
-                    className="hover:bg-slate-800/30 transition duration-150"
+                    className="hover:bg-slate-50 transition duration-150"
                   >
                     <td className="py-4 px-6">
-                      <div className="font-semibold text-white">{log.vehicle.name}</div>
-                      <div className="text-xs text-slate-500 font-mono">{log.vehicle.reg_number}</div>
+                      <div className="font-semibold" style={{ color: '#1B1A22' }}>{log.vehicle.name}</div>
+                      <div className="text-xs font-mono" style={{ color: '#6B6976' }}>{log.vehicle.reg_number}</div>
                     </td>
-                    <td className="py-4 px-6 text-slate-300">{log.service_type}</td>
-                    <td className="py-4 px-6 text-slate-400">
+                    <td className="py-4 px-6" style={{ color: '#1B1A22' }}>{log.service_type}</td>
+                    <td className="py-4 px-6" style={{ color: '#6B6976' }}>
                       {new Date(log.date).toLocaleDateString(undefined, {
                         year: 'numeric',
                         month: 'short',
                         day: 'numeric',
                       })}
                     </td>
-                    <td className="py-4 px-6 text-right font-semibold text-slate-200">
+                    <td className="py-4 px-6 text-right font-semibold" style={{ color: '#1B1A22' }}>
                       ₹{log.cost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </td>
                     <td className="py-4 px-6 text-center">
@@ -348,13 +350,15 @@ export const MaintenancePage: React.FC = () => {
                     <td className="py-4 px-6 text-right space-x-2">
                       <button
                         onClick={() => handleOpenEdit(log)}
-                        className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition"
+                        className="px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer"
+                        style={{ backgroundColor: '#FCFCFB', border: '1px solid #EDEDF2', color: '#1B1A22' }}
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(log.id)}
-                        className="px-2.5 py-1 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs font-medium transition"
+                        className="px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer"
+                        style={{ backgroundColor: '#DB444415', color: '#DB4444' }}
                       >
                         Delete
                       </button>
@@ -366,23 +370,25 @@ export const MaintenancePage: React.FC = () => {
           </table>
         </div>
         {!loading && logs.length > 0 && (
-          <div className="px-6 py-3 border-t border-slate-800 text-xs text-slate-500">
+          <div className="px-6 py-3 text-xs" style={{ borderTop: '1px solid #EDEDF2', color: '#6B6976' }}>
             Showing {logs.length} service record{logs.length !== 1 ? 's' : ''}
           </div>
         )}
       </div>
 
       {/* Add / Edit Modal */}
+      {/* Add / Edit Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-          <div className="bg-[#131a2a] border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+          <div className="bg-white border rounded-2xl max-w-lg w-full p-6 shadow-2xl" style={{ borderColor: '#EDEDF2' }}>
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-xl font-bold text-white">
+              <h2 className="text-xl font-bold" style={{ color: '#1B1A22' }}>
                 {editingLog ? 'Edit Service Record' : 'Log Service'}
               </h2>
               <button
                 onClick={() => setShowModal(false)}
-                className="p-1 rounded-lg hover:bg-slate-700/50 text-slate-400 hover:text-white transition"
+                className="p-1 rounded-lg hover:bg-gray-100 transition cursor-pointer"
+                style={{ color: '#6B6976' }}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -391,7 +397,7 @@ export const MaintenancePage: React.FC = () => {
             </div>
 
             {formError && (
-              <div className="p-3 mb-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs font-medium">
+              <div className="p-3 mb-4 rounded-xl text-xs font-medium" style={{ backgroundColor: '#DB444415', border: '1px solid #DB444440', color: '#DB4444' }}>
                 {formError}
               </div>
             )}
@@ -399,7 +405,7 @@ export const MaintenancePage: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-4 text-sm">
               {/* Vehicle Select */}
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase mb-1.5">
+                <label className="block text-xs font-semibold uppercase mb-1.5" style={{ color: '#6B6976' }}>
                   Vehicle
                 </label>
                 <select
@@ -407,7 +413,8 @@ export const MaintenancePage: React.FC = () => {
                   value={form.vehicle_id}
                   onChange={(e) => setForm({ ...form, vehicle_id: e.target.value })}
                   disabled={!!editingLog}
-                  className="w-full px-3 py-2 rounded-lg bg-[#182236] border border-slate-700 text-white focus:outline-none focus:border-blue-500 disabled:opacity-60"
+                  className="w-full px-3 py-2 rounded-lg bg-[#FCFCFB] text-sm focus:outline-none disabled:opacity-60"
+                  style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
                 >
                   <option value="">Select vehicle…</option>
                   {vehicles.map((v) => (
@@ -417,7 +424,7 @@ export const MaintenancePage: React.FC = () => {
                   ))}
                 </select>
                 {!editingLog && (
-                  <p className="text-xs text-amber-400/70 mt-1">
+                  <p className="text-xs mt-1" style={{ color: '#E8952E' }}>
                     Creating an Active record will move the vehicle to In Shop.
                   </p>
                 )}
@@ -425,13 +432,14 @@ export const MaintenancePage: React.FC = () => {
 
               {/* Service Type */}
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase mb-1.5">
+                <label className="block text-xs font-semibold uppercase mb-1.5" style={{ color: '#6B6976' }}>
                   Service Type
                 </label>
                 <select
                   value={form.service_type}
                   onChange={(e) => setForm({ ...form, service_type: e.target.value })}
-                  className="w-full px-3 py-2 rounded-lg bg-[#182236] border border-slate-700 text-white focus:outline-none focus:border-blue-500"
+                  className="w-full px-3 py-2 rounded-lg bg-[#FCFCFB] text-sm focus:outline-none"
+                  style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
                 >
                   {SERVICE_TYPES.map((s) => (
                     <option key={s} value={s}>
@@ -444,7 +452,7 @@ export const MaintenancePage: React.FC = () => {
               <div className="grid grid-cols-2 gap-4">
                 {/* Cost */}
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase mb-1.5">
+                  <label className="block text-xs font-semibold uppercase mb-1.5" style={{ color: '#6B6976' }}>
                     Cost (₹)
                   </label>
                   <input
@@ -455,13 +463,14 @@ export const MaintenancePage: React.FC = () => {
                     value={form.cost}
                     onChange={(e) => setForm({ ...form, cost: e.target.value })}
                     placeholder="250.00"
-                    className="w-full px-3 py-2 rounded-lg bg-[#182236] border border-slate-700 text-white focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2 rounded-lg bg-[#FCFCFB] text-sm focus:outline-none"
+                    style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
                   />
                 </div>
 
                 {/* Date */}
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase mb-1.5">
+                  <label className="block text-xs font-semibold uppercase mb-1.5" style={{ color: '#6B6976' }}>
                     Service Date
                   </label>
                   <input
@@ -469,14 +478,15 @@ export const MaintenancePage: React.FC = () => {
                     required
                     value={form.date}
                     onChange={(e) => setForm({ ...form, date: e.target.value })}
-                    className="w-full px-3 py-2 rounded-lg bg-[#182236] border border-slate-700 text-white focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2 rounded-lg bg-[#FCFCFB] text-sm focus:outline-none"
+                    style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
                   />
                 </div>
               </div>
 
               {/* Status */}
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase mb-1.5">
+                <label className="block text-xs font-semibold uppercase mb-1.5" style={{ color: '#6B6976' }}>
                   Status
                 </label>
                 <div className="flex gap-3">
@@ -485,10 +495,10 @@ export const MaintenancePage: React.FC = () => {
                       key={s}
                       type="button"
                       onClick={() => setForm({ ...form, status: s })}
-                      className={`flex-1 py-2 rounded-xl text-sm font-semibold border transition ${
+                      className={`flex-1 py-2 rounded-xl text-sm font-semibold border transition cursor-pointer ${
                         form.status === s
                           ? STATUS_COLORS[s]
-                          : 'border-slate-700 text-slate-500 hover:border-slate-600 hover:text-slate-400'
+                          : 'border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-700'
                       }`}
                     >
                       {s}
@@ -497,18 +507,19 @@ export const MaintenancePage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+              <div className="flex items-center justify-end gap-3 pt-4 border-t" style={{ borderColor: '#EDEDF2' }}>
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold transition"
+                  className="px-4 py-2 rounded-xl font-semibold transition cursor-pointer"
+                  style={{ backgroundColor: '#FCFCFB', border: '1px solid #EDEDF2', color: '#1B1A22' }}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold transition shadow-lg shadow-blue-600/25 disabled:opacity-50"
+                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold transition shadow-lg shadow-blue-600/25 disabled:opacity-50 cursor-pointer"
                 >
                   {saving ? 'Saving…' : editingLog ? 'Update Record' : 'Log Service'}
                 </button>
