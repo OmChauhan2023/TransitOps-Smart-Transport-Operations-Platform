@@ -15,7 +15,7 @@ export const RBAC_MATRIX: Record<RoleName, Record<ModuleName, AccessLevel>> = {
     drivers: 'full',
     trips: 'none',
     maintenance: 'full',
-    'fuel-exp': 'none',
+    'fuel-exp': 'full',
     analytics: 'full',
   },
   Dispatcher: {

@@ -1,0 +1,23 @@
+# TransitOps — Task Tracker
+
+- [x] **Task 1**: Repo init, folder structure, Prisma schema (Section 3), `.env` template
+- [x] **Task 2**: User model + signup/login endpoints (bcrypt), account lockout after 5 failed attempts
+- [x] **Task 3**: JWT middleware + RBAC role guard enforcing Section 4 / Screen 8 permission matrix
+- [x] **Task 4**: **Screen 0** — Login page UI (split-panel layout, role dropdown, error/lockout states)
+- [x] **Task 5**: Vehicle CRUD API + unique reg_number validation
+- [x] **Task 6**: **Screen 2** — Vehicle Registry UI (filters, table, Add Vehicle modal, rule text)
+- [x] **Task 7**: Driver CRUD API + license expiry/status validation
+- [x] **Task 8**: **Screen 3** — Drivers & Safety Profiles UI (table, status toggle, rule text)
+- [x] **Task 9**: Trip API: dispatch validation (capacity check, availability, license, suspension) + create/dispatch endpoints + available-only vehicle/driver endpoints
+- [x] **Task 10**: **Screen 4** — Trip Dispatcher UI (lifecycle stepper, create form, live capacity validation box, Live Board)
+- [x] **Task 11**: Trip complete/cancel endpoints + auto status sync (vehicle & driver back to Available)
+- [x] **Task 12**: Maintenance API (creating active record → vehicle In Shop; closing → Available unless Retired)
+- [x] **Task 13**: **Screen 5** — Maintenance UI (log form, service log table, state diagram note)
+- [x] **Task 14**: Fuel/Expense API + operational cost aggregation (Fuel + Maintenance)
+- [ ] **Task 15**: **Screen 6** — Fuel & Expense Management UI (fuel logs, other expenses, total cost line)
+- [ ] **Task 16**: **Screen 1** — Dashboard KPI aggregation endpoints
+- [ ] **Task 17**: **Screen 1** — Dashboard UI (KPI cards, filters, Recent Trips table, Vehicle Status bars)
+- [ ] **Task 18**: **Screen 7** — Analytics endpoints + CSV export
+- [ ] **Task 19**: **Screen 7** — Analytics UI (KPI cards, ROI formula note, bar chart, costliest-vehicles ranking)
+- [ ] **Task 20**: **Screen 8** — Settings & RBAC UI (General form + read-only permission matrix table)
+- [ ] **Task 21**: End-to-End Workflow Verification across all screens & seed data for demo script
