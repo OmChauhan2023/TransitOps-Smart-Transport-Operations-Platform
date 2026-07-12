@@ -172,11 +172,11 @@ export const exportAnalyticsCsv = async (req: Request, res: Response): Promise<v
       'Total Trips',
       'Completed Trips',
       'Total Distance (km)',
-      'Fuel Cost ($)',
-      'Maintenance Cost ($)',
-      'Other Expenses ($)',
-      'Total Cost ($)',
-      'Cost per km ($/km)',
+      'Fuel Cost (INR)',
+      'Maintenance Cost (INR)',
+      'Other Expenses (INR)',
+      'Total Cost (INR)',
+      'Cost per km (INR/km)',
     ];
 
     const rows = vehicleAnalytics.map((v) => [

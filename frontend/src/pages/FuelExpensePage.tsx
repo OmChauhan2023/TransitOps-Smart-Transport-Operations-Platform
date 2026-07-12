@@ -180,57 +180,54 @@ export const FuelExpensePage: React.FC = () => {
       {/* KPI Cards Banner */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
         {/* Total Operational Cost */}
-        <div className="p-5 rounded-2xl bg-gradient-to-br from-blue-900/40 to-[#0e1422] border border-blue-500/30">
-          <div className="text-xs font-semibold uppercase tracking-wider text-blue-300 mb-2 flex items-center justify-between">
-            <span>Total Operational Cost</span>
-            <span className="px-2 py-0.5 rounded bg-blue-500/20 text-[10px] text-blue-300">
-              Aggregated
-            </span>
+        <div className="p-5 rounded-2xl bg-gradient-to-br from-blue-900/30 to-slate-800/80 border border-blue-500/30">
+          <div className="text-xs font-semibold text-blue-400 uppercase tracking-wider mb-1">
+            Total Operational Cost
           </div>
-          <div className="text-3xl font-extrabold text-white font-mono">
-            ${summary.totalOperationalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          <div className="text-2xl font-bold text-white">
+            ₹{summary.totalOperationalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </div>
-          <div className="text-xs text-slate-400 mt-2">
-            Fuel + Maintenance + Other
+          <div className="text-xs text-slate-400 mt-1">
+            Fuel + Maintenance + Logged Expenses
           </div>
         </div>
 
-        {/* Total Fuel Cost */}
-        <div className="p-5 rounded-2xl bg-[#0e1422] border border-slate-800">
-          <div className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
-            Total Fuel Cost
+        {/* Total Fuel */}
+        <div className="p-5 rounded-2xl bg-[#131a2a] border border-slate-800">
+          <div className="text-xs font-semibold text-emerald-400 uppercase tracking-wider mb-1">
+            Fuel Spend
           </div>
-          <div className="text-2xl font-bold text-white font-mono">
-            ${summary.overallFuelCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          <div className="text-2xl font-bold text-white">
+            ₹{summary.overallFuelCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </div>
-          <div className="text-xs text-slate-400 mt-2">
-            {summary.overallFuelLiters.toLocaleString()} total liters consumed
-          </div>
-        </div>
-
-        {/* Total Maintenance Cost */}
-        <div className="p-5 rounded-2xl bg-[#0e1422] border border-slate-800">
-          <div className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
-            Total Maintenance Cost
-          </div>
-          <div className="text-2xl font-bold text-white font-mono">
-            ${summary.overallMaintenanceCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-          </div>
-          <div className="text-xs text-slate-400 mt-2">
-            Linked from Service Logs
+          <div className="text-xs text-slate-400 mt-1">
+            {summary.overallFuelLiters.toLocaleString()} Liters Logged
           </div>
         </div>
 
-        {/* Other Expenses */}
-        <div className="p-5 rounded-2xl bg-[#0e1422] border border-slate-800">
-          <div className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+        {/* Total Maintenance */}
+        <div className="p-5 rounded-2xl bg-[#131a2a] border border-slate-800">
+          <div className="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-1">
+            Maintenance Spend
+          </div>
+          <div className="text-2xl font-bold text-white">
+            ₹{summary.overallMaintenanceCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          </div>
+          <div className="text-xs text-slate-400 mt-1">
+            Active & Completed Logs
+          </div>
+        </div>
+
+        {/* Total Other Expenses */}
+        <div className="p-5 rounded-2xl bg-[#131a2a] border border-slate-800">
+          <div className="text-xs font-semibold text-purple-400 uppercase tracking-wider mb-1">
             Other Expenses
           </div>
-          <div className="text-2xl font-bold text-white font-mono">
-            ${summary.overallOtherExpenseCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          <div className="text-2xl font-bold text-white">
+            ₹{summary.overallOtherExpenseCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </div>
-          <div className="text-xs text-slate-400 mt-2">
-            Tolls, incidentals &amp; fees
+          <div className="text-xs text-slate-400 mt-1">
+            Tolls, Parking & Incidentals
           </div>
         </div>
       </div>
@@ -336,10 +333,10 @@ export const FuelExpensePage: React.FC = () => {
                           {log.liters.toLocaleString()} L
                         </td>
                         <td className="px-6 py-4 font-mono font-semibold text-emerald-400">
-                          ${log.fuel_cost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                          ₹{log.fuel_cost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </td>
                         <td className="px-6 py-4 font-mono text-slate-400">
-                          ${costPerL.toFixed(2)}
+                          ₹{costPerL.toFixed(2)}
                         </td>
                         <td className="px-6 py-4 text-right">
                           <button
@@ -403,16 +400,16 @@ export const FuelExpensePage: React.FC = () => {
                         <div className="text-xs text-slate-400">{exp.vehicle.name}</div>
                       </td>
                       <td className="px-6 py-4 font-mono text-slate-300">
-                        ${exp.toll.toFixed(2)}
+                        ₹{exp.toll.toFixed(2)}
                       </td>
                       <td className="px-6 py-4 font-mono text-slate-300">
-                        ${exp.other.toFixed(2)}
+                        ₹{exp.other.toFixed(2)}
                       </td>
                       <td className="px-6 py-4 font-mono text-slate-400">
-                        ${exp.maintenance_linked.toFixed(2)}
+                        ₹{exp.maintenance_linked.toFixed(2)}
                       </td>
                       <td className="px-6 py-4 font-mono font-semibold text-amber-400">
-                        ${exp.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        ₹{exp.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </td>
                       <td className="px-6 py-4 text-right">
                         <button
@@ -475,16 +472,16 @@ export const FuelExpensePage: React.FC = () => {
                         {v.name} ({v.type})
                       </td>
                       <td className="px-6 py-4 font-mono text-slate-300">
-                        ${v.fuelCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        ₹{v.fuelCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </td>
                       <td className="px-6 py-4 font-mono text-slate-300">
-                        ${v.maintenanceCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        ₹{v.maintenanceCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </td>
                       <td className="px-6 py-4 font-mono text-slate-300">
-                        ${v.otherExpenseCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        ₹{v.otherExpenseCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </td>
                       <td className="px-6 py-4 text-right font-mono font-bold text-blue-400">
-                        ${v.totalOperationalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        ₹{v.totalOperationalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </td>
                     </tr>
                   ))
@@ -573,7 +570,7 @@ export const FuelExpensePage: React.FC = () => {
 
                 <div>
                   <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
-                    Total Fuel Cost ($)
+                    Total Fuel Cost (₹)
                   </label>
                   <input
                     type="number"
@@ -658,7 +655,7 @@ export const FuelExpensePage: React.FC = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
-                    Toll Fees ($)
+                    Toll Fees (₹)
                   </label>
                   <input
                     type="number"
@@ -673,7 +670,7 @@ export const FuelExpensePage: React.FC = () => {
 
                 <div>
                   <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
-                    Other / Incidentals ($)
+                    Other / Incidentals (₹)
                   </label>
                   <input
                     type="number"

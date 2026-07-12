@@ -34,19 +34,55 @@ export const AnalyticsPage: React.FC = () => {
   const handleExportCsv = async () => {
     setExporting(true);
     try {
-      const response = await api.get('/analytics/export/csv', {
-        responseType: 'blob',
-      });
-      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'text/csv' }));
+      let csvText = '';
+      try {
+        const response = await api.get('/analytics/export/csv', {
+          responseType: 'text',
+        });
+        csvText = response.data;
+      } catch (err) {
+        // Fallback to client-side CSV generator
+        const headers = [
+          'Registration Number',
+          'Vehicle Name',
+          'Type',
+          'Region',
+          'Total Trips',
+          'Completed Trips',
+          'Total Distance (km)',
+          'Fuel Cost (INR)',
+          'Maintenance Cost (INR)',
+          'Other Expenses (INR)',
+          'Total Cost (INR)',
+          'Cost per km (INR/km)',
+        ];
+        const rows = vehicles.map((v) => [
+          `"${v.reg_number}"`,
+          `"${v.name}"`,
+          `"${v.type}"`,
+          `"${v.region}"`,
+          v.totalTrips,
+          v.completedTrips,
+          v.totalDistanceKm,
+          v.fuelCost.toFixed(2),
+          v.maintenanceCost.toFixed(2),
+          v.otherCost.toFixed(2),
+          v.totalCost.toFixed(2),
+          v.costPerKm.toFixed(2),
+        ]);
+        csvText = [headers.join(','), ...rows.map((row) => row.join(','))].join('\n');
+      }
+
+      const blob = new Blob([csvText], { type: 'text/csv;charset=utf-8;' });
+      const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', 'transitops-analytics-export.csv');
+      link.setAttribute('download', `transitops-analytics-report-${new Date().toISOString().slice(0, 10)}.csv`);
       document.body.appendChild(link);
       link.click();
-      link.remove();
+      document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (err: any) {
-      alert('Failed to export CSV report.');
       console.error('export CSV error:', err);
     } finally {
       setExporting(false);
@@ -112,18 +148,18 @@ export const AnalyticsPage: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           {
-            label: 'Total Operational Cost',
-            value: `$${(summary?.totalFleetCost || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-            color: 'text-emerald-400',
-            bg: 'bg-emerald-500/10 border-emerald-500/20',
+            label: 'Total Fleet Operational Cost',
+            value: `₹${(summary?.totalFleetCost || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+            color: 'text-blue-400',
+            bg: 'bg-blue-500/10 border-blue-500/30',
             icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
           },
           {
-            label: 'Average Cost / km',
-            value: `$${(summary?.averageCostPerKm || 0).toFixed(2)} / km`,
-            color: 'text-blue-400',
-            bg: 'bg-blue-500/10 border-blue-500/20',
-            icon: 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6',
+            label: 'Average Cost per km',
+            value: `₹${(summary?.averageCostPerKm || 0).toFixed(2)} / km`,
+            color: 'text-emerald-400',
+            bg: 'bg-emerald-500/10 border-emerald-500/30',
+            icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z',
           },
           {
             label: 'Total Distance Traveled',
@@ -161,7 +197,7 @@ export const AnalyticsPage: React.FC = () => {
             Fleet Operational Cost Breakdown
           </h3>
           <span className="text-xs text-slate-400">
-            Total: ${(summary?.totalFleetCost || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            Total: ₹{(summary?.totalFleetCost || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </span>
         </div>
 
@@ -192,7 +228,7 @@ export const AnalyticsPage: React.FC = () => {
               <span className="text-slate-300 font-medium">Fuel Cost</span>
             </div>
             <div className="font-semibold text-white">
-              ${(summary?.totalFuelCost || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ({fuelPct.toFixed(1)}%)
+              ₹{(summary?.totalFuelCost || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ({fuelPct.toFixed(1)}%)
             </div>
           </div>
 
@@ -202,7 +238,7 @@ export const AnalyticsPage: React.FC = () => {
               <span className="text-slate-300 font-medium">Maintenance Cost</span>
             </div>
             <div className="font-semibold text-white">
-              ${(summary?.totalMaintenanceCost || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ({maintPct.toFixed(1)}%)
+              ₹{(summary?.totalMaintenanceCost || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ({maintPct.toFixed(1)}%)
             </div>
           </div>
 
@@ -212,7 +248,7 @@ export const AnalyticsPage: React.FC = () => {
               <span className="text-slate-300 font-medium">Other Expenses</span>
             </div>
             <div className="font-semibold text-white">
-              ${(summary?.totalOtherCost || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ({otherPct.toFixed(1)}%)
+              ₹{(summary?.totalOtherCost || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ({otherPct.toFixed(1)}%)
             </div>
           </div>
         </div>
@@ -304,19 +340,19 @@ export const AnalyticsPage: React.FC = () => {
                         {v.totalDistanceKm.toLocaleString()} km
                       </td>
                       <td className="py-4 px-6 text-right text-slate-400">
-                        ${v.fuelCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        ₹{v.fuelCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </td>
                       <td className="py-4 px-6 text-right text-slate-400">
-                        ${v.maintenanceCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        ₹{v.maintenanceCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </td>
                       <td className="py-4 px-6 text-right text-slate-400">
-                        ${v.otherCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        ₹{v.otherCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </td>
                       <td className="py-4 px-6 text-right font-bold text-emerald-400">
-                        ${v.totalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        ₹{v.totalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </td>
                       <td className="py-4 px-6 text-right font-mono text-xs text-slate-300">
-                        ${v.costPerKm.toFixed(2)} / km
+                        ₹{v.costPerKm.toFixed(2)} / km
                       </td>
                     </tr>
                   );

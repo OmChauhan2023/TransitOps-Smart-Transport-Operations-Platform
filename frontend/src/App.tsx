@@ -85,7 +85,7 @@ function App() {
     >
       <Sidebar
         activePage={activePage}
-        onSelectPage={(p) => setActivePage(p)}
+        onSelectPage={(p: Page) => setActivePage(p)}
         onLogout={handleLogout}
       />
       <TopBar role={user.role} userName={user.name} />

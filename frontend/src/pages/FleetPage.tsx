@@ -227,7 +227,7 @@ export const FleetPage: React.FC = () => {
                       {v.odometer.toLocaleString()} km
                     </td>
                     <td className="px-6 py-4 text-slate-300">
-                      ${v.acquisition_cost.toLocaleString()}
+                      ₹{v.acquisition_cost.toLocaleString()}
                     </td>
                     <td className="px-6 py-4">
                       <span
@@ -305,14 +305,16 @@ export const FleetPage: React.FC = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
-                    Registration No.
+                    Registration No. (AA 00 BB 1111)
                   </label>
                   <input
                     type="text"
                     value={form.reg_number}
-                    onChange={(e) => setForm({ ...form, reg_number: e.target.value })}
-                    placeholder="e.g. Van-05"
-                    className="w-full px-3 py-2.5 rounded-xl bg-[#151d30] border border-slate-700 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-blue-500 transition"
+                    onChange={(e) => setForm({ ...form, reg_number: e.target.value.toUpperCase() })}
+                    placeholder="e.g. MH 12 AB 1234"
+                    pattern="^[A-Z]{2}\s?[0-9]{2}\s?[A-Z]{2}\s?[0-9]{4}$"
+                    title="Format: AA 00 BB 1111 (e.g. MH 12 AB 1234)"
+                    className="w-full px-3 py-2.5 rounded-xl bg-[#151d30] border border-slate-700 text-white font-mono text-sm placeholder-slate-500 focus:outline-none focus:border-blue-500 transition"
                     required
                   />
                 </div>
@@ -393,7 +395,7 @@ export const FleetPage: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
-                    Acq. Cost ($)
+                    Acq. Cost (₹)
                   </label>
                   <input
                     type="number"

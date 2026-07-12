@@ -414,16 +414,26 @@ export const DriversPage: React.FC = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-semibold text-slate-400 uppercase mb-1">
-                    Contact Phone
+                    Contact Phone (+91 10-digit mobile)
                   </label>
-                  <input
-                    type="text"
-                    required
-                    value={form.contact}
-                    onChange={(e) => setForm({ ...form, contact: e.target.value })}
-                    placeholder="+1 (555) 019-2831"
-                    className="w-full px-3 py-2 rounded-lg bg-[#182236] border border-slate-700 text-white focus:outline-none focus:border-blue-500"
-                  />
+                  <div className="flex">
+                    <span className="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-slate-700 bg-[#111928] text-slate-300 text-sm font-semibold">
+                      +91
+                    </span>
+                    <input
+                      type="text"
+                      required
+                      maxLength={10}
+                      pattern="[0-9]{10}"
+                      value={form.contact.replace(/^\+91\s*/, '')}
+                      onChange={(e) => {
+                        const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
+                        setForm({ ...form, contact: `+91 ${digits}` });
+                      }}
+                      placeholder="9876543210"
+                      className="w-full px-3 py-2 rounded-r-lg bg-[#182236] border border-slate-700 text-white focus:outline-none focus:border-blue-500 font-mono"
+                    />
+                  </div>
                 </div>
 
                 <div>

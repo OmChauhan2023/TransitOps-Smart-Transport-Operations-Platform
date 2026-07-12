@@ -217,7 +217,7 @@ export const MaintenancePage: React.FC = () => {
           },
           {
             label: 'Total Service Cost',
-            value: `$${totalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+            value: `₹${totalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
             color: 'text-slate-200',
             bg: 'bg-slate-800/60 border-slate-700/60',
             icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
@@ -312,7 +312,7 @@ export const MaintenancePage: React.FC = () => {
                       })}
                     </td>
                     <td className="py-4 px-6 text-right font-semibold text-slate-200">
-                      ${log.cost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      ₹{log.cost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </td>
                     <td className="py-4 px-6 text-center">
                       <button
@@ -426,7 +426,7 @@ export const MaintenancePage: React.FC = () => {
                 {/* Cost */}
                 <div>
                   <label className="block text-xs font-semibold text-slate-400 uppercase mb-1.5">
-                    Cost ($)
+                    Cost (₹)
                   </label>
                   <input
                     type="number"

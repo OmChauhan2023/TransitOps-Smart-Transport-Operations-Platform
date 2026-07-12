@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { Role, User } from '../types/auth';
 import api from '../services/api';
+import { ModalAlert } from '../components';
 
 interface LoginPageProps {
   onLoginSuccess: (user: User, token: string) => void;
@@ -21,6 +22,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
   const [error, setError] = useState<string | null>(null);
   const [isLocked, setIsLocked] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -195,7 +197,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
                 href="#forgot"
                 onClick={(e) => {
                   e.preventDefault();
-                  alert('Please contact your Fleet Manager to reset your password.');
+                  setAlertOpen(true);
                 }}
                 className="text-blue-400 hover:text-blue-300 font-medium"
               >
@@ -226,6 +228,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
           </div>
         </div>
       </div>
+
+      <ModalAlert
+        isOpen={alertOpen}
+        title="Password Reset"
+        message="Please contact your Fleet Manager to reset your password or update your security credentials."
+        type="info"
+        onClose={() => setAlertOpen(false)}
+      />
     </div>
   );
 };
