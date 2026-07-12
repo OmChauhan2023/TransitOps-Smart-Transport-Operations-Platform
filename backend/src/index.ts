@@ -8,6 +8,7 @@ import authRoutes from './routes/auth.routes';
 import vehicleRoutes from './routes/vehicle.routes';
 import driverRoutes from './routes/driver.routes';
 import tripRoutes from './routes/trip.routes';
+import maintenanceRoutes from './routes/maintenance.routes';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -25,6 +26,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/drivers', driverRoutes);
 app.use('/api/trips', tripRoutes);
+app.use('/api/maintenance', maintenanceRoutes);
 
 // 404 fallback
 app.use((req, res) => {

@@ -169,7 +169,7 @@ export const createTrip = async (req: Request, res: Response): Promise<void> => 
     }
 
     // Transaction to create trip and optionally update vehicle/driver status
-    const trip = await prisma.$transaction(async (tx) => {
+    const trip = await prisma.$transaction(async (tx: any) => {
       const newTrip = await tx.trip.create({
         data: {
           trip_code,
@@ -247,7 +247,7 @@ export const dispatchTrip = async (req: Request, res: Response): Promise<void> =
       return;
     }
 
-    const updatedTrip = await prisma.$transaction(async (tx) => {
+    const updatedTrip = await prisma.$transaction(async (tx: any) => {
       const updated = await tx.trip.update({
         where: { id: trip.id },
         data: {
@@ -299,7 +299,7 @@ export const completeTrip = async (req: Request, res: Response): Promise<void> =
     const distanceNum = actual_distance !== undefined ? parseFloat(actual_distance) : trip.planned_distance;
     const fuelNum = fuel_consumed !== undefined && fuel_consumed !== '' ? parseFloat(fuel_consumed) : null;
 
-    const completedTrip = await prisma.$transaction(async (tx) => {
+    const completedTrip = await prisma.$transaction(async (tx: any) => {
       const updated = await tx.trip.update({
         where: { id: trip.id },
         data: {
@@ -361,7 +361,7 @@ export const cancelTrip = async (req: Request, res: Response): Promise<void> => 
 
     const wasDispatched = trip.status === 'Dispatched';
 
-    const cancelledTrip = await prisma.$transaction(async (tx) => {
+    const cancelledTrip = await prisma.$transaction(async (tx: any) => {
       const updated = await tx.trip.update({
         where: { id: trip.id },
         data: {

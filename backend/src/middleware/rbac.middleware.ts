@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-export type ModuleName = 'fleet' | 'drivers' | 'trips' | 'fuel-exp' | 'analytics';
+export type ModuleName = 'fleet' | 'drivers' | 'trips' | 'maintenance' | 'fuel-exp' | 'analytics';
 export type AccessLevel = 'full' | 'view' | 'none';
 
 export type RoleName =
@@ -14,6 +14,7 @@ export const RBAC_MATRIX: Record<RoleName, Record<ModuleName, AccessLevel>> = {
     fleet: 'full',
     drivers: 'full',
     trips: 'none',
+    maintenance: 'full',
     'fuel-exp': 'none',
     analytics: 'full',
   },
@@ -21,6 +22,7 @@ export const RBAC_MATRIX: Record<RoleName, Record<ModuleName, AccessLevel>> = {
     fleet: 'view',
     drivers: 'none',
     trips: 'full',
+    maintenance: 'none',
     'fuel-exp': 'none',
     analytics: 'none',
   },
@@ -28,6 +30,7 @@ export const RBAC_MATRIX: Record<RoleName, Record<ModuleName, AccessLevel>> = {
     fleet: 'none',
     drivers: 'full',
     trips: 'view',
+    maintenance: 'view',
     'fuel-exp': 'none',
     analytics: 'none',
   },
@@ -35,6 +38,7 @@ export const RBAC_MATRIX: Record<RoleName, Record<ModuleName, AccessLevel>> = {
     fleet: 'view',
     drivers: 'none',
     trips: 'none',
+    maintenance: 'view',
     'fuel-exp': 'full',
     analytics: 'full',
   },
