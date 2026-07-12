@@ -142,6 +142,15 @@ export const deleteVehicle = async (req: Request, res: Response): Promise<void> 
       return;
     }
 
+    // Block deletion if vehicle has active trips
+    const activeTrips = await prisma.trip.count({
+      where: { vehicle_id: id, status: { in: ['Draft', 'Dispatched'] } },
+    });
+    if (activeTrips > 0) {
+      res.status(409).json({ message: 'Cannot delete vehicle with active or dispatched trips' });
+      return;
+    }
+
     await prisma.vehicle.delete({ where: { id } });
     res.json({ message: 'Vehicle deleted successfully' });
   } catch (err) {

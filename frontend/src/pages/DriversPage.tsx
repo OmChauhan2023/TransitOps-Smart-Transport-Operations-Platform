@@ -130,12 +130,12 @@ export const DriversPage: React.FC = () => {
   };
 
   const handleDelete = async (driverId: string) => {
-    if (!window.confirm('Are you sure you want to delete this driver profile?')) return;
+    if (!window.confirm('Are you sure you want to delete this driver profile? This action cannot be undone.')) return;
     try {
       await api.delete(`/drivers/${driverId}`);
       fetchDrivers();
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to delete driver');
+      alert(err?.response?.data?.message || 'Failed to delete driver. They may be assigned to existing trips.');
     }
   };
 

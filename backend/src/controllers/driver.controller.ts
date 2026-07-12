@@ -197,6 +197,15 @@ export const deleteDriver = async (req: Request, res: Response): Promise<void> =
       return;
     }
 
+    // Block deletion if driver has active trips
+    const activeTrips = await prisma.trip.count({
+      where: { driver_id: id, status: { in: ['Draft', 'Dispatched'] } },
+    });
+    if (activeTrips > 0) {
+      res.status(409).json({ message: 'Cannot delete driver with active or dispatched trips' });
+      return;
+    }
+
     await prisma.driver.delete({ where: { id } });
     res.json({ message: 'Driver deleted successfully' });
   } catch (err) {

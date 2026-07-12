@@ -6,7 +6,7 @@ export const getMaintenanceLogs = async (req: Request, res: Response): Promise<v
   try {
     const { status, vehicle_id, service_type } = req.query;
 
-    const where: any = {};
+    const where: Record<string, unknown> = {};
     if (status && status !== 'All') where.status = status as string;
     if (vehicle_id && vehicle_id !== 'All') where.vehicle_id = vehicle_id as string;
     if (service_type && service_type !== 'All') where.service_type = service_type as string;
@@ -68,16 +68,21 @@ export const createMaintenanceLog = async (req: Request, res: Response): Promise
       return;
     }
 
-    const logStatus = status || 'Active';
+    const parsedDate = new Date(date);
+    if (isNaN(parsedDate.getTime())) {
+      res.status(400).json({ message: 'Invalid date format' });
+      return;
+    }
 
-    // Perform transaction: create log and optionally transition vehicle to InShop
+    const logStatus: 'Active' | 'Completed' = status === 'Completed' ? 'Completed' : 'Active';
+
     const result = await prisma.$transaction(async (tx: any) => {
       const maintenanceLog = await tx.maintenanceLog.create({
         data: {
           vehicle_id,
           service_type,
           cost: parseFloat(cost),
-          date: new Date(date),
+          date: parsedDate,
           status: logStatus,
         },
         include: {
@@ -87,7 +92,7 @@ export const createMaintenanceLog = async (req: Request, res: Response): Promise
         },
       });
 
-      // Creating active record -> vehicle InShop
+      // Creating active record → vehicle InShop (unless Retired)
       if (logStatus === 'Active' && vehicle.status !== 'Retired') {
         await tx.vehicle.update({
           where: { id: vehicle_id },
@@ -124,7 +129,7 @@ export const updateMaintenanceLog = async (req: Request, res: Response): Promise
       return;
     }
 
-    const newStatus = status || existing.status;
+    const newStatus: 'Active' | 'Completed' = status === 'Completed' ? 'Completed' : existing.status;
 
     const updated = await prisma.$transaction(async (tx: any) => {
       const log = await tx.maintenanceLog.update({
@@ -142,12 +147,13 @@ export const updateMaintenanceLog = async (req: Request, res: Response): Promise
         },
       });
 
-      // If status changed to Completed, check if vehicle should return to Available
+      // Closing active → Completed: restore vehicle to Available if no other active logs
       if (existing.status === 'Active' && newStatus === 'Completed') {
         const remainingActive = await tx.maintenanceLog.count({
           where: {
             vehicle_id: existing.vehicle_id,
             status: 'Active',
+            id: { not: id },
           },
         });
 
@@ -158,6 +164,7 @@ export const updateMaintenanceLog = async (req: Request, res: Response): Promise
           });
         }
       } else if (existing.status === 'Completed' && newStatus === 'Active') {
+        // Re-opening completed → vehicle back to InShop
         if (existing.vehicle.status !== 'Retired') {
           await tx.vehicle.update({
             where: { id: existing.vehicle_id },
@@ -197,6 +204,11 @@ export const updateMaintenanceLogStatus = async (req: Request, res: Response): P
       return;
     }
 
+    if (existing.status === status) {
+      res.json({ message: 'Status unchanged', maintenanceLog: existing });
+      return;
+    }
+
     const updated = await prisma.$transaction(async (tx: any) => {
       const log = await tx.maintenanceLog.update({
         where: { id },
@@ -213,6 +225,7 @@ export const updateMaintenanceLogStatus = async (req: Request, res: Response): P
           where: {
             vehicle_id: existing.vehicle_id,
             status: 'Active',
+            id: { not: id },
           },
         });
 
@@ -241,7 +254,7 @@ export const updateMaintenanceLogStatus = async (req: Request, res: Response): P
   }
 };
 
-// DELETE /api/maintenance/:id — delete log & restore status if needed
+// DELETE /api/maintenance/:id — delete log & restore vehicle status if needed
 export const deleteMaintenanceLog = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
@@ -264,6 +277,7 @@ export const deleteMaintenanceLog = async (req: Request, res: Response): Promise
           where: {
             vehicle_id: existing.vehicle_id,
             status: 'Active',
+            id: { not: id },
           },
         });
 

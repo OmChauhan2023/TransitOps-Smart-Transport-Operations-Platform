@@ -35,12 +35,19 @@ function App() {
     const savedToken = localStorage.getItem('transitops_token');
     const savedUser = localStorage.getItem('transitops_user');
     if (savedToken && savedUser) {
-      setToken(savedToken);
       try {
-        setUser(JSON.parse(savedUser));
+        const parsedUser = JSON.parse(savedUser);
+        setToken(savedToken);
+        setUser(parsedUser);
       } catch {
+        // Corrupted user data - clear everything and re-login
+        localStorage.removeItem('transitops_token');
         localStorage.removeItem('transitops_user');
       }
+    } else if (savedToken && !savedUser) {
+      // Token exists but no persisted user (rememberMe was false)
+      // Clear the token so the user is prompted to log in again
+      localStorage.removeItem('transitops_token');
     }
   }, []);
 

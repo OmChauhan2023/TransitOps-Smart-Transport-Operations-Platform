@@ -104,23 +104,19 @@ export const FleetPage: React.FC = () => {
       setShowModal(false);
       fetchVehicles();
     } catch (err: any) {
-      if (err.response?.data?.message) {
-        setFormError(err.response.data.message);
-      } else {
-        setFormError('Failed to save vehicle');
-      }
+      setFormError(err?.response?.data?.message || 'Failed to save vehicle. Please try again.');
     } finally {
       setSaving(false);
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this vehicle?')) return;
+    if (!window.confirm('Are you sure you want to delete this vehicle? This action cannot be undone.')) return;
     try {
       await api.delete(`/vehicles/${id}`);
       fetchVehicles();
-    } catch (err) {
-      console.error('Failed to delete vehicle:', err);
+    } catch (err: any) {
+      alert(err?.response?.data?.message || 'Failed to delete vehicle. It may be referenced by existing trips.');
     }
   };
 

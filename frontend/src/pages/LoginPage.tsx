@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import type { Role, User } from '../types/auth';
 import api from '../services/api';
 
@@ -26,9 +25,10 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setIsLocked(false);
 
     if (!email || !password) {
-      setError('Invalid credentials');
+      setError('Email and password are required.');
       return;
     }
 
@@ -41,22 +41,23 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
       });
 
       if (response.data.token && response.data.user) {
+        // Always store token so the app remains authenticated on navigation
+        localStorage.setItem('transitops_token', response.data.token);
         if (rememberMe) {
-          localStorage.setItem('transitops_token', response.data.token);
+          // Persist user object so session survives a page refresh
           localStorage.setItem('transitops_user', JSON.stringify(response.data.user));
+        } else {
+          // Remove any previously-remembered user to respect the current preference
+          localStorage.removeItem('transitops_user');
         }
         onLoginSuccess(response.data.user, response.data.token);
       }
     } catch (err: any) {
-      if (axios.isAxiosError(err) && err.response) {
-        const data = err.response.data;
-        if (data.locked) {
-          setIsLocked(true);
-        }
-        setError(data.message || 'Invalid credentials');
-      } else {
-        setError('Invalid credentials');
+      const data = err?.response?.data;
+      if (data?.locked) {
+        setIsLocked(true);
       }
+      setError(data?.message || 'Invalid credentials');
     } finally {
       setLoading(false);
     }

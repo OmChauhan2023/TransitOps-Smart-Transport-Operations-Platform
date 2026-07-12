@@ -136,9 +136,13 @@ export const TripsPage: React.FC = () => {
   };
 
   const handleCompleteTrip = async (trip: Trip) => {
-    const distStr = prompt('Enter actual distance (km):', trip.planned_distance.toString());
-    if (distStr === null) return;
-    const actual_distance = parseFloat(distStr) || trip.planned_distance;
+    const distStr = window.prompt('Enter actual distance (km):', trip.planned_distance.toString());
+    if (distStr === null) return; // user cancelled
+    const actual_distance = parseFloat(distStr);
+    if (isNaN(actual_distance) || actual_distance < 0) {
+      alert('Please enter a valid distance.');
+      return;
+    }
     try {
       await api.post(`/trips/${trip.id}/complete`, { actual_distance });
       fetchTrips();
@@ -148,7 +152,7 @@ export const TripsPage: React.FC = () => {
   };
 
   const handleCancelTrip = async (tripId: string) => {
-    if (!confirm('Are you sure you want to cancel this trip?')) return;
+    if (!window.confirm('Are you sure you want to cancel this trip?')) return;
     try {
       await api.post(`/trips/${tripId}/cancel`, {});
       fetchTrips();
