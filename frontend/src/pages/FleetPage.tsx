@@ -121,16 +121,24 @@ export const FleetPage: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="space-y-6" data-testid="fleet-page">
       {/* Page Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Vehicle Registry</h1>
-          <p className="text-sm text-slate-400 mt-1">Manage your fleet vehicles and registrations</p>
+          <h1
+            className="text-2xl font-bold tracking-tight"
+            style={{ color: '#1B1A22', fontFamily: 'Archivo, system-ui, sans-serif' }}
+          >
+            Vehicle Registry
+          </h1>
+          <p className="text-sm mt-1" style={{ color: '#6B6976' }}>
+            Manage your fleet vehicles and registrations
+          </p>
         </div>
         <button
           onClick={openAddModal}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold shadow-lg shadow-blue-600/25 transition duration-150"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-white font-semibold text-sm transition cursor-pointer"
+          style={{ backgroundColor: '#5B2EBF' }}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -140,11 +148,12 @@ export const FleetPage: React.FC = () => {
       </div>
 
       {/* Filters Row */}
-      <div className="flex flex-wrap items-center gap-3 mb-6">
+      <div className="flex flex-wrap items-center gap-3">
         <select
           value={filterType}
           onChange={(e) => setFilterType(e.target.value)}
-          className="px-4 py-2.5 rounded-xl bg-[#151d30] border border-slate-700 text-sm text-white focus:outline-none focus:border-blue-500 transition"
+          className="px-3 py-2 rounded-lg bg-[#FCFCFB] text-sm focus:outline-none transition"
+          style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
         >
           <option value="All">All Types</option>
           {VEHICLE_TYPES.map((t) => (
@@ -155,7 +164,8 @@ export const FleetPage: React.FC = () => {
         <select
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
-          className="px-4 py-2.5 rounded-xl bg-[#151d30] border border-slate-700 text-sm text-white focus:outline-none focus:border-blue-500 transition"
+          className="px-3 py-2 rounded-lg bg-[#FCFCFB] text-sm focus:outline-none transition"
+          style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
         >
           <option value="All">All Statuses</option>
           {VEHICLE_STATUSES.map((s) => (
@@ -169,45 +179,49 @@ export const FleetPage: React.FC = () => {
             value={searchReg}
             onChange={(e) => setSearchReg(e.target.value)}
             placeholder="Search reg. no…"
-            className="w-full px-4 py-2.5 rounded-xl bg-[#151d30] border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition"
+            className="w-full px-3 py-2 rounded-lg bg-[#FCFCFB] text-sm focus:outline-none transition"
+            style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
           />
         </div>
       </div>
 
       {/* Rule Text */}
-      <div className="mb-6 px-4 py-3 rounded-xl bg-amber-500/8 border border-amber-500/20 text-xs text-amber-300/80">
-        <span className="font-semibold text-amber-300">Rule:</span> Registration No. must be unique · Retired/In Shop vehicles are hidden from Trip Dispatcher
+      <div
+        className="px-4 py-3 rounded-xl text-xs"
+        style={{ backgroundColor: '#E8952E1A', border: '1px solid #E8952E33', color: '#1B1A22' }}
+      >
+        <span className="font-semibold" style={{ color: '#E8952E' }}>Rule:</span> Registration No. must be unique · Retired/In Shop vehicles are hidden from Trip Dispatcher
       </div>
 
       {/* Vehicles Table */}
-      <div className="rounded-2xl bg-[#0e1422] border border-slate-800 overflow-hidden">
+      <div className="rounded-xl bg-white overflow-hidden" style={{ border: '1px solid #EDEDF2' }}>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-800">
-                <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Reg. No.</th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Name / Model</th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Type</th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Capacity</th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Odometer</th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Acq. Cost</th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Status</th>
-                <th className="text-right px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Actions</th>
+              <tr style={{ borderBottom: '1px solid #EDEDF2', backgroundColor: '#FCFCFB' }}>
+                <th className="text-left px-6 py-3.5 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Reg. No.</th>
+                <th className="text-left px-6 py-3.5 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Name / Model</th>
+                <th className="text-left px-6 py-3.5 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Type</th>
+                <th className="text-left px-6 py-3.5 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Capacity</th>
+                <th className="text-left px-6 py-3.5 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Odometer</th>
+                <th className="text-left px-6 py-3.5 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Acq. Cost</th>
+                <th className="text-left px-6 py-3.5 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Status</th>
+                <th className="text-right px-6 py-3.5 text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={8} className="px-6 py-16 text-center text-slate-500">
+                  <td colSpan={8} className="px-6 py-16 text-center" style={{ color: '#6B6976' }}>
                     <div className="flex items-center justify-center gap-3">
-                      <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                      <div className="w-5 h-5 border-2 border-[#5B2EBF] border-t-transparent rounded-full animate-spin" />
                       Loading vehicles…
                     </div>
                   </td>
                 </tr>
               ) : vehicles.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="px-6 py-16 text-center text-slate-500">
+                  <td colSpan={8} className="px-6 py-16 text-center" style={{ color: '#6B6976' }}>
                     No vehicles found. Add your first vehicle to get started.
                   </td>
                 </tr>
@@ -215,32 +229,32 @@ export const FleetPage: React.FC = () => {
                 vehicles.map((v) => (
                   <tr
                     key={v.id}
-                    className="border-b border-slate-800/60 hover:bg-slate-800/30 transition"
+                    className="hover:bg-[#FCFCFB] transition"
+                    style={{ borderBottom: '1px solid #EDEDF2' }}
                   >
-                    <td className="px-6 py-4 font-mono font-semibold text-white">{v.reg_number}</td>
-                    <td className="px-6 py-4 text-slate-300">{v.name}</td>
-                    <td className="px-6 py-4 text-slate-400">{v.type}</td>
-                    <td className="px-6 py-4 text-slate-300">
+                    <td className="px-6 py-3.5 font-mono font-semibold" style={{ color: '#1B1A22' }}>{v.reg_number}</td>
+                    <td className="px-6 py-3.5 font-medium" style={{ color: '#1B1A22' }}>{v.name}</td>
+                    <td className="px-6 py-3.5" style={{ color: '#6B6976' }}>{v.type}</td>
+                    <td className="px-6 py-3.5 font-mono" style={{ color: '#1B1A22' }}>
                       {v.max_load.toLocaleString()} {v.load_unit}
                     </td>
-                    <td className="px-6 py-4 text-slate-400">
+                    <td className="px-6 py-3.5 font-mono" style={{ color: '#6B6976' }}>
                       {v.odometer.toLocaleString()} km
                     </td>
-                    <td className="px-6 py-4 text-slate-300">
+                    <td className="px-6 py-3.5 font-mono" style={{ color: '#1B1A22' }}>
                       ₹{v.acquisition_cost.toLocaleString()}
                     </td>
-                    <td className="px-6 py-4">
-                      <span
-                        className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold border ${STATUS_COLORS[v.status]}`}
-                      >
+                    <td className="px-6 py-3.5">
+                      <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${STATUS_COLORS[v.status]}`}>
                         {STATUS_LABELS[v.status]}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-right">
+                    <td className="px-6 py-3.5 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => openEditModal(v)}
-                          className="p-2 rounded-lg hover:bg-slate-700/50 text-slate-400 hover:text-blue-400 transition"
+                          className="p-1.5 rounded-lg hover:bg-gray-100 transition cursor-pointer"
+                          style={{ color: '#6B6976' }}
                           title="Edit"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -249,7 +263,7 @@ export const FleetPage: React.FC = () => {
                         </button>
                         <button
                           onClick={() => handleDelete(v.id)}
-                          className="p-2 rounded-lg hover:bg-slate-700/50 text-slate-400 hover:text-red-400 transition"
+                          className="p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition cursor-pointer"
                           title="Delete"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -267,7 +281,7 @@ export const FleetPage: React.FC = () => {
 
         {/* Footer count */}
         {!loading && vehicles.length > 0 && (
-          <div className="px-6 py-3 border-t border-slate-800 text-xs text-slate-500">
+          <div className="px-6 py-3 text-xs" style={{ borderTop: '1px solid #EDEDF2', color: '#6B6976' }}>
             Showing {vehicles.length} vehicle{vehicles.length !== 1 ? 's' : ''}
           </div>
         )}
@@ -277,17 +291,21 @@ export const FleetPage: React.FC = () => {
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/40 backdrop-blur-xs"
             onClick={() => setShowModal(false)}
           />
-          <div className="relative w-full max-w-lg mx-4 bg-[#0e1422] border border-slate-700 rounded-2xl shadow-2xl">
-            <div className="px-6 py-5 border-b border-slate-800 flex items-center justify-between">
-              <h3 className="text-lg font-bold text-white">
+          <div className="relative w-full max-w-lg mx-4 bg-white rounded-2xl shadow-xl overflow-hidden" style={{ border: '1px solid #EDEDF2' }}>
+            <div className="px-6 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid #EDEDF2' }}>
+              <h3
+                className="text-lg font-bold"
+                style={{ color: '#1B1A22', fontFamily: 'Archivo, system-ui, sans-serif' }}
+              >
                 {editingVehicle ? 'Edit Vehicle' : 'Add Vehicle'}
               </h3>
               <button
                 onClick={() => setShowModal(false)}
-                className="p-1 rounded-lg hover:bg-slate-700/50 text-slate-400 hover:text-white transition"
+                className="p-1 rounded-lg hover:bg-gray-100 transition cursor-pointer"
+                style={{ color: '#6B6976' }}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -297,90 +315,93 @@ export const FleetPage: React.FC = () => {
 
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               {formError && (
-                <div className="px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/30 text-sm text-red-300 font-medium">
+                <div
+                  className="px-4 py-3 rounded-xl text-sm font-medium"
+                  style={{ backgroundColor: '#DB444415', border: '1px solid #DB444440', color: '#DB4444' }}
+                >
                   {formError}
                 </div>
               )}
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
-                    Registration No. (AA 00 BB 1111)
+                  <label className="block text-xs font-medium uppercase tracking-wider mb-1.5" style={{ color: '#6B6976' }}>
+                    Registration No. *
                   </label>
                   <input
                     type="text"
-                    value={form.reg_number}
-                    onChange={(e) => setForm({ ...form, reg_number: e.target.value.toUpperCase() })}
-                    placeholder="e.g. MH 12 AB 1234"
-                    pattern="^[A-Z]{2}\s?[0-9]{2}\s?[A-Z]{2}\s?[0-9]{4}$"
-                    title="Format: AA 00 BB 1111 (e.g. MH 12 AB 1234)"
-                    className="w-full px-3 py-2.5 rounded-xl bg-[#151d30] border border-slate-700 text-white font-mono text-sm placeholder-slate-500 focus:outline-none focus:border-blue-500 transition"
                     required
+                    placeholder="e.g. MH-12-AB-1234"
+                    value={form.reg_number}
+                    onChange={(e) => setForm({ ...form, reg_number: e.target.value })}
+                    className="w-full px-3 py-2 rounded-lg bg-[#FCFCFB] text-sm focus:outline-none"
+                    style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
                   />
                 </div>
+
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
-                    Name / Model
+                  <label className="block text-xs font-medium uppercase tracking-wider mb-1.5" style={{ color: '#6B6976' }}>
+                    Vehicle Name / Model *
                   </label>
                   <input
                     type="text"
+                    required
+                    placeholder="e.g. Tata Prima 4018"
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    placeholder="e.g. Mercedes Sprinter"
-                    className="w-full px-3 py-2.5 rounded-xl bg-[#151d30] border border-slate-700 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-blue-500 transition"
-                    required
+                    className="w-full px-3 py-2 rounded-lg bg-[#FCFCFB] text-sm focus:outline-none"
+                    style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
-                    Type
+                  <label className="block text-xs font-medium uppercase tracking-wider mb-1.5" style={{ color: '#6B6976' }}>
+                    Type *
                   </label>
                   <select
                     value={form.type}
                     onChange={(e) => setForm({ ...form, type: e.target.value })}
-                    className="w-full px-3 py-2.5 rounded-xl bg-[#151d30] border border-slate-700 text-white text-sm focus:outline-none focus:border-blue-500 transition"
+                    className="w-full px-3 py-2 rounded-lg bg-[#FCFCFB] text-sm focus:outline-none"
+                    style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
                   >
                     {VEHICLE_TYPES.map((t) => (
                       <option key={t} value={t}>{t}</option>
                     ))}
                   </select>
                 </div>
+
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
-                    Region
+                  <label className="block text-xs font-medium uppercase tracking-wider mb-1.5" style={{ color: '#6B6976' }}>
+                    Max Load Capacity *
                   </label>
-                  <select
-                    value={form.region}
-                    onChange={(e) => setForm({ ...form, region: e.target.value })}
-                    className="w-full px-3 py-2.5 rounded-xl bg-[#151d30] border border-slate-700 text-white text-sm focus:outline-none focus:border-blue-500 transition"
-                  >
-                    {REGIONS.map((r) => (
-                      <option key={r} value={r}>{r}</option>
-                    ))}
-                  </select>
+                  <div className="flex gap-2">
+                    <input
+                      type="number"
+                      required
+                      placeholder="5000"
+                      value={form.max_load}
+                      onChange={(e) => setForm({ ...form, max_load: e.target.value })}
+                      className="w-full px-3 py-2 rounded-lg bg-[#FCFCFB] text-sm focus:outline-none"
+                      style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
+                    />
+                    <select
+                      value={form.load_unit}
+                      onChange={(e) => setForm({ ...form, load_unit: e.target.value })}
+                      className="px-3 py-2 rounded-lg bg-[#FCFCFB] text-sm focus:outline-none"
+                      style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
+                    >
+                      <option value="kg">kg</option>
+                      <option value="tons">tons</option>
+                    </select>
+                  </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
-                    Max Load
-                  </label>
-                  <input
-                    type="number"
-                    value={form.max_load}
-                    onChange={(e) => setForm({ ...form, max_load: e.target.value })}
-                    placeholder="500"
-                    className="w-full px-3 py-2.5 rounded-xl bg-[#151d30] border border-slate-700 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-blue-500 transition"
-                    required
-                    min={0}
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-medium uppercase tracking-wider mb-1.5" style={{ color: '#6B6976' }}>
                     Odometer (km)
                   </label>
                   <input
@@ -388,13 +409,14 @@ export const FleetPage: React.FC = () => {
                     value={form.odometer}
                     onChange={(e) => setForm({ ...form, odometer: e.target.value })}
                     placeholder="0"
-                    className="w-full px-3 py-2.5 rounded-xl bg-[#151d30] border border-slate-700 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-blue-500 transition"
+                    className="w-full px-3 py-2 rounded-lg bg-[#FCFCFB] text-sm focus:outline-none transition"
+                    style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
                     required
                     min={0}
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-medium uppercase tracking-wider mb-1.5" style={{ color: '#6B6976' }}>
                     Acq. Cost (₹)
                   </label>
                   <input
@@ -402,42 +424,66 @@ export const FleetPage: React.FC = () => {
                     value={form.acquisition_cost}
                     onChange={(e) => setForm({ ...form, acquisition_cost: e.target.value })}
                     placeholder="25000"
-                    className="w-full px-3 py-2.5 rounded-xl bg-[#151d30] border border-slate-700 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-blue-500 transition"
+                    className="w-full px-3 py-2 rounded-lg bg-[#FCFCFB] text-sm focus:outline-none transition"
+                    style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
                     required
                     min={0}
                   />
                 </div>
               </div>
 
-              {editingVehicle && (
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
-                    Status
+                  <label className="block text-xs font-medium uppercase tracking-wider mb-1.5" style={{ color: '#6B6976' }}>
+                    Assigned Region *
                   </label>
                   <select
-                    value={form.status}
-                    onChange={(e) => setForm({ ...form, status: e.target.value as VehicleStatus })}
-                    className="w-full px-3 py-2.5 rounded-xl bg-[#151d30] border border-slate-700 text-white text-sm focus:outline-none focus:border-blue-500 transition"
+                    value={form.region}
+                    onChange={(e) => setForm({ ...form, region: e.target.value })}
+                    className="w-full px-3 py-2 rounded-lg bg-[#FCFCFB] text-sm focus:outline-none transition"
+                    style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
                   >
-                    {VEHICLE_STATUSES.map((s) => (
-                      <option key={s} value={s}>{STATUS_LABELS[s]}</option>
+                    {REGIONS.map((r) => (
+                      <option key={r} value={r}>{r}</option>
                     ))}
                   </select>
                 </div>
-              )}
 
-              <div className="pt-3 flex items-center gap-3">
+                {editingVehicle ? (
+                  <div>
+                    <label className="block text-xs font-medium uppercase tracking-wider mb-1.5" style={{ color: '#6B6976' }}>
+                      Status
+                    </label>
+                    <select
+                      value={form.status}
+                      onChange={(e) => setForm({ ...form, status: e.target.value as VehicleStatus })}
+                      className="w-full px-3 py-2 rounded-lg bg-[#FCFCFB] text-sm focus:outline-none transition"
+                      style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
+                    >
+                      {VEHICLE_STATUSES.map((s) => (
+                        <option key={s} value={s}>{STATUS_LABELS[s]}</option>
+                      ))}
+                    </select>
+                  </div>
+                ) : (
+                  <div />
+                )}
+              </div>
+
+              <div className="pt-3 flex items-center gap-3" style={{ borderTop: '1px solid #EDEDF2' }}>
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="flex-1 py-2.5 px-4 rounded-xl border border-slate-700 text-slate-300 text-sm font-semibold hover:bg-slate-800 transition"
+                  className="flex-1 py-2 px-4 rounded-lg text-sm font-semibold hover:bg-gray-50 transition cursor-pointer"
+                  style={{ border: '1px solid #EDEDF2', color: '#1B1A22' }}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="flex-1 py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:bg-slate-700 text-white text-sm font-semibold shadow-lg shadow-blue-600/25 transition"
+                  className="flex-1 py-2 px-4 rounded-lg text-white text-sm font-semibold transition cursor-pointer disabled:opacity-50"
+                  style={{ backgroundColor: '#5B2EBF' }}
                 >
                   {saving ? 'Saving…' : editingVehicle ? 'Update Vehicle' : 'Add Vehicle'}
                 </button>

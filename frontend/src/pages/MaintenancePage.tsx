@@ -161,18 +161,24 @@ export const MaintenancePage: React.FC = () => {
   const vehiclesInShop = new Set(logs.filter((l) => l.status === 'Active').map((l) => l.vehicle_id)).size;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-testid="maintenance-page">
       {/* Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Maintenance</h1>
-          <p className="text-sm text-slate-400 mt-1">
+          <h1
+            className="text-2xl font-bold tracking-tight"
+            style={{ color: '#1B1A22', fontFamily: 'Archivo, system-ui, sans-serif' }}
+          >
+            Maintenance
+          </h1>
+          <p className="text-sm mt-1" style={{ color: '#6B6976' }}>
             Track service logs and manage vehicle maintenance lifecycle.
           </p>
         </div>
         <button
           onClick={handleOpenAdd}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm shadow-lg shadow-blue-600/25 transition duration-150"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-white font-semibold text-sm transition cursor-pointer"
+          style={{ backgroundColor: '#5B2EBF' }}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -182,19 +188,22 @@ export const MaintenancePage: React.FC = () => {
       </div>
 
       {/* State Diagram Note */}
-      <div className="p-4 rounded-xl bg-slate-800/60 border border-slate-700/60">
-        <p className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+      <div
+        className="p-4 rounded-xl flex flex-col gap-2"
+        style={{ backgroundColor: '#FCFCFB', border: '1px solid #EDEDF2' }}
+      >
+        <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#6B6976' }}>
           Vehicle Status State Machine
         </p>
-        <div className="flex flex-wrap items-center gap-2 text-xs text-slate-400">
-          <span className="px-2 py-1 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold">Available</span>
-          <span className="text-slate-600">→ Log Active →</span>
-          <span className="px-2 py-1 rounded bg-amber-500/15 text-amber-400 border border-amber-500/30 font-semibold">In Shop</span>
-          <span className="text-slate-600">→ Mark Completed →</span>
-          <span className="px-2 py-1 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold">Available</span>
-          <span className="mx-2 text-slate-600">|</span>
-          <span className="px-2 py-1 rounded bg-red-500/15 text-red-400 border border-red-500/30 font-semibold">Retired</span>
-          <span className="text-slate-600">→ status never changes</span>
+        <div className="flex flex-wrap items-center gap-2 text-xs" style={{ color: '#1B1A22' }}>
+          <span className="px-2 py-1 rounded font-semibold" style={{ backgroundColor: '#22B57315', color: '#22B573', border: '1px solid #22B57333' }}>Available</span>
+          <span style={{ color: '#6B6976' }}>→ Log Active →</span>
+          <span className="px-2 py-1 rounded font-semibold" style={{ backgroundColor: '#E8952E15', color: '#E8952E', border: '1px solid #E8952E33' }}>In Shop</span>
+          <span style={{ color: '#6B6976' }}>→ Mark Completed →</span>
+          <span className="px-2 py-1 rounded font-semibold" style={{ backgroundColor: '#22B57315', color: '#22B573', border: '1px solid #22B57333' }}>Available</span>
+          <span className="mx-2" style={{ color: '#6B6976' }}>|</span>
+          <span className="px-2 py-1 rounded font-semibold" style={{ backgroundColor: '#DB444415', color: '#DB4444', border: '1px solid #DB444433' }}>Retired</span>
+          <span style={{ color: '#6B6976' }}>→ status never changes</span>
         </div>
       </div>
 
@@ -204,34 +213,44 @@ export const MaintenancePage: React.FC = () => {
           {
             label: 'Active Service Logs',
             value: totalActive,
-            color: 'text-amber-400',
-            bg: 'bg-amber-500/10 border-amber-500/20',
+            color: '#E8952E',
+            bg: '#E8952E15',
+            border: '#E8952E33',
             icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
           },
           {
             label: 'Vehicles In Shop',
             value: vehiclesInShop,
-            color: 'text-blue-400',
-            bg: 'bg-blue-500/10 border-blue-500/20',
+            color: '#5B2EBF',
+            bg: '#5B2EBF15',
+            border: '#5B2EBF33',
             icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4',
           },
           {
             label: 'Total Service Cost',
             value: `₹${totalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-            color: 'text-slate-200',
-            bg: 'bg-slate-800/60 border-slate-700/60',
+            color: '#1B1A22',
+            bg: '#FCFCFB',
+            border: '#EDEDF2',
             icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
           },
         ].map((card) => (
-          <div key={card.label} className={`p-5 rounded-2xl border ${card.bg} flex items-center gap-4`}>
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${card.bg}`}>
-              <svg className={`w-5 h-5 ${card.color}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div
+            key={card.label}
+            className="p-5 rounded-xl bg-white flex items-center gap-4"
+            style={{ border: `1px solid ${card.border}` }}
+          >
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+              style={{ backgroundColor: card.bg }}
+            >
+              <svg className="w-5 h-5" style={{ color: card.color }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d={card.icon} />
               </svg>
             </div>
             <div>
-              <div className={`text-xl font-bold ${card.color}`}>{card.value}</div>
-              <div className="text-xs text-slate-500 mt-0.5">{card.label}</div>
+              <div className="text-xl font-bold" style={{ color: card.color }}>{card.value}</div>
+              <div className="text-xs mt-0.5" style={{ color: '#6B6976' }}>{card.label}</div>
             </div>
           </div>
         ))}

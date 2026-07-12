@@ -138,14 +138,17 @@ export const FuelExpensePage: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="space-y-6" data-testid="fuel-expense-page">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">
+          <h1
+            className="text-2xl font-bold tracking-tight"
+            style={{ color: '#1B1A22', fontFamily: 'Archivo, system-ui, sans-serif' }}
+          >
             Fuel &amp; Expense Management
           </h1>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm mt-1" style={{ color: '#6B6976' }}>
             Track operational costs, fuel efficiency, and incidentals across the fleet
           </p>
         </div>
@@ -155,7 +158,8 @@ export const FuelExpensePage: React.FC = () => {
               setError(null);
               setShowFuelModal(true);
             }}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold shadow-lg shadow-blue-600/25 transition"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-white font-semibold text-sm transition cursor-pointer"
+            style={{ backgroundColor: '#5B2EBF' }}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -167,7 +171,8 @@ export const FuelExpensePage: React.FC = () => {
               setError(null);
               setShowExpenseModal(true);
             }}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#151d30] hover:bg-slate-800 border border-slate-700 text-white text-sm font-semibold transition"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg font-semibold text-sm transition cursor-pointer"
+            style={{ backgroundColor: '#FCFCFB', border: '1px solid #EDEDF2', color: '#1B1A22' }}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -178,43 +183,52 @@ export const FuelExpensePage: React.FC = () => {
       </div>
 
       {/* KPI Cards Banner */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         {/* Total Operational Cost */}
-        <div className="p-5 rounded-2xl bg-gradient-to-br from-blue-900/30 to-slate-800/80 border border-blue-500/30">
-          <div className="text-xs font-semibold text-blue-400 uppercase tracking-wider mb-1">
+        <div
+          className="p-5 rounded-xl bg-white"
+          style={{ border: '1px solid #EDEDF2' }}
+        >
+          <div className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#5B2EBF' }}>
             Total Operational Cost
           </div>
-          <div className="text-2xl font-bold text-white">
+          <div className="text-2xl font-bold" style={{ color: '#1B1A22' }}>
             ₹{summary.totalOperationalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </div>
-          <div className="text-xs text-slate-400 mt-1">
+          <div className="text-xs mt-1" style={{ color: '#6B6976' }}>
             Fuel + Maintenance + Logged Expenses
           </div>
         </div>
 
         {/* Total Fuel */}
-        <div className="p-5 rounded-2xl bg-[#131a2a] border border-slate-800">
-          <div className="text-xs font-semibold text-emerald-400 uppercase tracking-wider mb-1">
+        <div
+          className="p-5 rounded-xl bg-white"
+          style={{ border: '1px solid #EDEDF2' }}
+        >
+          <div className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#22B573' }}>
             Fuel Spend
           </div>
-          <div className="text-2xl font-bold text-white">
+          <div className="text-2xl font-bold" style={{ color: '#1B1A22' }}>
             ₹{summary.overallFuelCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </div>
-          <div className="text-xs text-slate-400 mt-1">
+          <div className="text-xs mt-1" style={{ color: '#6B6976' }}>
             {summary.overallFuelLiters.toLocaleString()} Liters Logged
           </div>
         </div>
 
         {/* Total Maintenance */}
-        <div className="p-5 rounded-2xl bg-[#131a2a] border border-slate-800">
-          <div className="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-1">
+        <div
+          className="p-5 rounded-xl bg-white"
+          style={{ border: '1px solid #EDEDF2' }}
+        >
+          <div className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#E8952E' }}>
             Maintenance Spend
           </div>
-          <div className="text-2xl font-bold text-white">
+          <div className="text-2xl font-bold" style={{ color: '#1B1A22' }}>
             ₹{summary.overallMaintenanceCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </div>
-          <div className="text-xs text-slate-400 mt-1">
-            Active & Completed Logs
+          <div className="text-xs mt-1" style={{ color: '#6B6976' }}>
+            Active &amp; Completed Logs
           </div>
         </div>
 
