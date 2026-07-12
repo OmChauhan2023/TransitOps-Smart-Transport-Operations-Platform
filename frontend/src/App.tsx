@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { LoginPage, FleetPage, DriversPage, TripsPage, MaintenancePage, FuelExpensePage, DashboardPage } from './pages';
+import { LoginPage, FleetPage, DriversPage, TripsPage, MaintenancePage, FuelExpensePage, DashboardPage, AnalyticsPage } from './pages';
 import type { User } from './types/auth';
 
 type Page = 'Dashboard' | 'Fleet' | 'Drivers' | 'Trips' | 'Maintenance' | 'Fuel & Expenses' | 'Analytics' | 'Settings';
@@ -82,6 +82,7 @@ function App() {
       case 'Dashboard':
         return <DashboardPage onNavigate={(p) => setActivePage(p)} />;
       case 'Analytics':
+        return <AnalyticsPage />;
       case 'Settings':
       default:
         return (

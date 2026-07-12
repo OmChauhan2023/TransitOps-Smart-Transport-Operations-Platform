@@ -18,6 +18,6 @@
 - [x] **Task 16**: **Screen 1** — Dashboard KPI aggregation endpoints
 - [x] **Task 17**: **Screen 1** — Dashboard UI (KPI cards, filters, Recent Trips table, Vehicle Status bars)
 - [x] **Task 18**: **Screen 7** — Analytics endpoints + CSV export
-- [ ] **Task 19**: **Screen 7** — Analytics UI (KPI cards, ROI formula note, bar chart, costliest-vehicles ranking)
+- [x] **Task 19**: **Screen 7** — Analytics UI (KPI cards, ROI formula note, bar chart, costliest-vehicles ranking)
 - [ ] **Task 20**: **Screen 8** — Settings & RBAC UI (General form + read-only permission matrix table)
 - [ ] **Task 21**: End-to-End Workflow Verification across all screens & seed data for demo script
