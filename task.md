@@ -16,7 +16,7 @@
 - [x] **Task 14**: Fuel/Expense API + operational cost aggregation (Fuel + Maintenance)
 - [x] **Task 15**: **Screen 6** — Fuel & Expense Management UI (fuel logs, other expenses, total cost line)
 - [x] **Task 16**: **Screen 1** — Dashboard KPI aggregation endpoints
-- [ ] **Task 17**: **Screen 1** — Dashboard UI (KPI cards, filters, Recent Trips table, Vehicle Status bars)
+- [x] **Task 17**: **Screen 1** — Dashboard UI (KPI cards, filters, Recent Trips table, Vehicle Status bars)
 - [ ] **Task 18**: **Screen 7** — Analytics endpoints + CSV export
 - [ ] **Task 19**: **Screen 7** — Analytics UI (KPI cards, ROI formula note, bar chart, costliest-vehicles ranking)
 - [ ] **Task 20**: **Screen 8** — Settings & RBAC UI (General form + read-only permission matrix table)
