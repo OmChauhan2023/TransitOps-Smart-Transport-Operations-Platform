@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { LoginPage, FleetPage, DriversPage, TripsPage } from './pages';
+import { LoginPage, FleetPage, DriversPage, TripsPage, MaintenancePage } from './pages';
 import type { User } from './types/auth';
 
 type Page = 'Dashboard' | 'Fleet' | 'Drivers' | 'Trips' | 'Maintenance' | 'Fuel & Expenses' | 'Analytics' | 'Settings';
@@ -75,8 +75,9 @@ function App() {
         return <DriversPage />;
       case 'Trips':
         return <TripsPage />;
-      case 'Dashboard':
       case 'Maintenance':
+        return <MaintenancePage />;
+      case 'Dashboard':
       case 'Fuel & Expenses':
       case 'Analytics':
       case 'Settings':
