@@ -1,0 +1,15 @@
+{
+  "name": "transitops-smart-transport-operations-platform",
+  "version": "1.0.0",
+  "description": "TransitOps Smart Transport Operations Platform",
+  "scripts": {
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "build:backend": "npm run build --prefix backend",
+    "build:frontend": "npm run build --prefix frontend"
+  },
+  "workspaces": [
+    "backend",
+    "frontend"
+  ]
+}
